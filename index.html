@@ -3,24 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Guides</title>
+    <title>Guide: Set Up Visual Studio Code and Python</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1em 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 1em;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2em auto;
+            padding: 1em;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        pre {
+            background: #eee;
+            padding: 1em;
+            overflow: auto;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1em 0;
+            background: #333;
+            color: #fff;
+        }
+
+        code {
+            background: #eee;
+            padding: 0.2em;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>My Guides</h1>
+        <h1>Guide: Set Up Visual Studio Code and Python</h1>
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="guide1.html">Guide 1</a></li>
-                <li><a href="guide2.html">Guide 2</a></li>
+                <li><a href="setup-vscode.html">Setup VS Code</a></li>
+                <li><a href="setup-python.html">Setup Python</a></li>
             </ul>
         </nav>
     </header>
-    <main>
-        <h2>Welcome to My Guides</h2>
-        <p>This website contains various guides to help you with different tasks.</p>
-    </main>
+    <div class="container">
+        <h2>Step-by-Step Guide to Download and Set Up Visual Studio Code and Python</h2>
+
+        <h3>Part 1: Download and Install Visual Studio Code</h3>
+        <h4>Download Visual Studio Code:</h4>
+        <ul>
+            <li>Open your web browser and go to the <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code download page</a>.</li>
+            <li>Choose your operating system (Windows, macOS, or Linux) and click the corresponding download link.</li>
+            <li>Save the installer to your computer.</li>
+        </ul>
+
+        <h4>Install Visual Studio Code:</h4>
+        <ul>
+            <li><strong>Windows:</strong> Double-click the downloaded <code>.exe</code> file. Follow the installation prompts. Ensure you select the options to add VS Code to the PATH and create a desktop icon.</li>
+            <li><strong>macOS:</strong> Double-click the downloaded <code>.dmg</code> file. Drag the Visual Studio Code icon to the Applications folder.</li>
+            <li><strong>Linux:</strong> Follow the instructions specific to your Linux distribution. For example, for Debian-based systems, download the <code>.deb</code> package and install it using <code>sudo dpkg -i &lt;file&gt;.deb</code>.</li>
+        </ul>
+
+        <h4>Launch Visual Studio Code:</h4>
+        <ul>
+            <li>Open Visual Studio Code from the Start Menu (Windows), Applications folder (macOS), or by typing <code>code</code> in your terminal (if added to PATH).</li>
+        </ul>
+
+        <h4>Set Up Visual Studio Code:</h4>
+        <ul>
+            <li><strong>Install Python Extension:</strong>
+                <ul>
+                    <li>Click on the Extensions icon in the sidebar or press <code>Ctrl+Shift+X</code>.</li>
+                    <li>Search for "Python" and click "Install" on the Python extension provided by Microsoft.</li>
+                </ul>
+            </li>
+            <li><strong>Configure Settings:</strong>
+                <ul>
+                    <li>Click on the gear icon (⚙️) in the lower left corner and select "Settings".</li>
+                    <li>Customize your settings as needed.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Part 2: Download and Install Python</h3>
+        <h4>Download Python:</h4>
+        <ul>
+            <li>Go to the <a href="https://www.python.org/" target="_blank">Python official website</a>.</li>
+            <li>Click on the "Downloads" tab and choose the download link for your operating system.</li>
+            <li>Save the installer to your computer.</li>
+        </ul>
+
+        <h4>Install Python:</h4>
+        <ul>
+            <li><strong>Windows:</strong>
+                <ul>
+                    <li>Double-click the downloaded <code>.exe</code> file.</li>
+                    <li>Ensure you check the box "Add Python to PATH" before clicking "Install Now".</li>
+                    <li>Follow the installation prompts.</li>
+                </ul>
+            </li>
+            <li><strong>macOS:</strong>
+                <ul>
+                    <li>Double-click the downloaded <code>.pkg</code> file.</li>
+                    <li>Follow the installation prompts.</li>
+                </ul>
+            </li>
+            <li><strong>Linux:</strong>
+                <ul>
+                    <li>You can install Python using your package manager. For example, on Ubuntu, run:</li>
+                    <pre><code>sudo apt update
+sudo apt install python3</code></pre>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>Verify Python Installation:</h4>
+        <ul>
+            <li>Open a terminal or command prompt.</li>
+            <li>Type <code>python --version</code> or <code>python3 --version</code> to verify the installation.</li>
+        </ul>
+
+        <h4>Set Up Python in Visual Studio Code:</h4>
+        <ul>
+            <li>Open Visual Studio Code.</li>
+            <li>Open the Command Palette by pressing <code>Ctrl+Shift+P</code>.</li>
+            <li>Type "Python: Select Interpreter" and select the Python interpreter you installed.</li>
+            <li>Create a new Python file by clicking on "File" > "New File", and save it with a <code>.py</code> extension.</li>
+            <li>Start coding in Python!</li>
+        </ul>
+
+        <h3>Summary</h3>
+        <ul>
+            <li>Download and install Visual Studio Code.</li>
+            <li>Install the Python extension in VS Code.</li>
+            <li>Download and install Python from the official website.</li>
+            <li>Set up Python in VS Code by selecting the Python interpreter.</li>
+        </ul>
+
+        <p>These steps will help you get started with Visual Studio Code and Python development. If you need further assistance, you can refer to the <a href="https://code.visualstudio.com/docs" target="_blank">VS Code documentation</a> and <a href="https://docs.python.org/3/" target="_blank">Python documentation</a>.</p>
+    </div>
     <footer>
         <p>&copy; 2024 My Guides</p>
     </footer>
