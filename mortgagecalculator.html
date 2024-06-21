@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Mortgage Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .output-group {
+            margin-top: 30px;
+        }
+        .output-group h2 {
+            color: #007bff;
+        }
+        .output-group p {
+            font-size: 18px;
+        }
+        .output-group canvas {
+            margin-top: 20px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Mortgage Calculator</h1>
+    <div class="input-group">
+        <label for="homeValue">Home Value ($):</label>
+        <input type="number" id="homeValue" min="0" value="300000" oninput="updateDownPaymentValue()">
+    </div>
+    <div class="input-group">
+        <label for="downPayment">Down Payment (%):</label>
+        <input type="number" id="downPayment" min="0" max="100" value="20" oninput="updateDownPaymentValue()">
+        <p id="downPaymentValue"></p>
+    </div>
+    <div class="input-group">
+        <label for="interestRate">Interest Rate (%):</label>
+        <input type="number" id="interestRate" step="0.01" min="0" value="3.5">
+    </div>
+    <div class="input-group">
+        <label for="duration">Mortgage Duration (years):</label>
+        <select id="duration">
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+        </select>
+    </div>
+    <div class="input-group">
+        <label for="propertyTax">Property Tax (per year) ($):</label>
+        <input type="number" id="propertyTax" min="0" value="3000">
+    </div>
+    <div class="input-group">
+        <label for="hoa">HOA (per month) ($):</label>
+        <input type="number" id="hoa" min="0" value="100">
+    </div>
+    <div class="input-group">
+        <label for="insurance">Insurance (per month) ($):</label>
+        <input type="number" id="insurance" min="0" value="50">
+    </div>
+    <button onclick="calculateMortgage()">Calculate</button>
+
+    <div class="output-group">
+        <h2>Total Monthly Payment</h2>
+        <p id="totalMonthlyPayment">$0</p>
+    </div>
+
+    <div class="output-group">
+        <h2>Monthly Payment Breakdown</h2>
+        <canvas id="breakdownChart"></canvas>
+    </div>
+
+    <div class="output-group">
+        <h2>Interest Rate Impact</h2>
+        <canvas id="rateChart"></canvas>
+    </div>
+</div>
+
+<script>
+    function updateDownPaymentValue() {
+        const homeValue = parseFloat(document.getElementById('homeValue').value);
+        const downPaymentPercentage = parseFloat(document.getElementById('downPayment').value);
+        const downPaymentValue = (homeValue * downPaymentPercentage / 100).toFixed(2);
+        document.getElementById('downPaymentValue').textContent = `Down Payment Value: $${downPaymentValue}`;
+    }
+
+    function calculateMortgage() {
+        const homeValue = parseFloat(document.getElementById('homeValue').value);
+        const downPaymentPercentage = parseFloat(document.getElementById('downPayment').value);
+        const downPayment = homeValue * downPaymentPercentage / 100;
+        const interestRate = parseFloat(document.getElementById('interestRate').value) / 100 / 12;
+        const duration = parseInt(document.getElementById('duration').value) * 12;
+        const propertyTax = parseFloat(document.getElementById('propertyTax').value) / 12;
+        const hoa = parseFloat(document.getElementById('hoa').value);
+        const insurance = parseFloat(document.getElementById('insurance').value);
+
+        const loanAmount = homeValue - downPayment;
+        const monthlyPrincipalInterest = loanAmount * interestRate / (1 - Math.pow((1 + interestRate), -duration));
+        const totalMonthlyPayment = monthlyPrincipalInterest + propertyTax + hoa + insurance;
+
+        document.getElementById('totalMonthlyPayment').textContent = `$${totalMonthlyPayment.toFixed(2)}`;
+
+        renderBreakdownChart(monthlyPrincipalInterest, propertyTax, hoa, insurance);
+        renderRateChart();
+    }
+
+    function renderBreakdownChart(principalInterest, tax, hoa, insurance) {
+        const ctx = document.getElementById('breakdownChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Principal & Interest', 'Property Tax', 'HOA', 'Insurance'],
+                datasets: [{
+                    label: 'Monthly Payment Breakdown',
+                    data: [principalInterest, tax, hoa, insurance],
+                    backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Components'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Amount ($)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderRateChart() {
+        const ctx = document.getElementById('rateChart').getContext('2d');
+        const data15 = [];
+        const data30 = [];
+        const rates = [];
+        for (let rate = 1; rate <= 10; rate += 0.5) {
+            rates.push(rate);
+            data15.push(calculateTotalPayment(15, rate));
+            data30.push(calculateTotalPayment(30, rate));
+        }
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: rates,
+                datasets: [
+                    {
+                        label: '15 Year Mortgage',
+                        data: data15,
+                        borderColor: 'blue',
+                        fill: false
+                    },
+                    {
+                        label: '30 Year Mortgage',
+                        data: data30,
+                        borderColor: 'red',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Interest Rate (%)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Monthly Payment ($)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function calculateTotalPayment(years, interestRate) {
+        const homeValue = parseFloat(document.getElementById('homeValue').value);
+        const downPaymentPercentage = parseFloat(document.getElementById('downPayment').value);
+        const downPayment = homeValue * downPaymentPercentage / 100;
+        const loanAmount = homeValue - downPayment;
+        const monthlyRate = interestRate / 100 / 12;
+        const duration = years * 12;
+        const propertyTax = parseFloat(document.getElementById('propertyTax').value) / 12;
+        const hoa = parseFloat(document.getElementById('hoa').value);
+        const insurance = parseFloat(document.getElementById('insurance').value);
+
+        const monthlyPrincipalInterest = loanAmount * monthlyRate / (1 - Math.pow((1 + monthlyRate), -duration));
+        return monthlyPrincipalInterest + propertyTax + hoa + insurance;
+    }
+
+    document.addEventListener("DOMContentLoaded", updateDownPaymentValue);
+</script>
+
+</body>
+</html>
