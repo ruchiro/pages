@@ -1,0 +1,824 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italian Language Curriculum A1-A2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #F5F7FA;
+            color: #2E3A59;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #1A237E;
+            font-weight: 700;
+        }
+
+        .level-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .level-btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: 1px solid #1A237E;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #FFFFFF;
+            color: #1A237E;
+            transition: background-color 0.3s;
+        }
+
+        .level-btn.active,
+        .level-btn:hover {
+            background-color: #1A237E;
+            color: #FFFFFF;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #E0E0E0;
+            text-align: left;
+            vertical-align: top;
+            font-size: 1rem;
+        }
+
+        th {
+            background-color: #1A237E;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        .unit-number {
+            width: 60px;
+            text-align: center;
+            font-weight: 700;
+            color: #1A237E;
+            background-color: #E8EAF6;
+        }
+
+        td ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .tooltip-item {
+            position: relative;
+            cursor: pointer;
+            margin-bottom: 6px;
+            color: #2E3A59;
+        }
+
+        .tooltip-content {
+            display: none;
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1A237E;
+            color: #FFFFFF;
+            padding: 8px 12px;
+            border-radius: 4px;
+            width: 240px;
+            font-size: 0.9rem;
+            text-align: center;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            line-height: 1.4;
+        }
+
+        .tooltip-item:hover .tooltip-content {
+            display: block;
+        }
+
+        .tooltip-content::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #1A237E transparent transparent transparent;
+        }
+
+        .info-text {
+            text-align: center;
+            color: #607D8B;
+            font-style: italic;
+            margin-top: 16px;
+            font-size: 0.9rem;
+        }
+
+        .level {
+            display: none;
+        }
+
+        .level.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            th, td {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            .tooltip-content {
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Italian Language Curriculum</h1>
+        
+        <div class="level-buttons">
+            <button class="level-btn active" onclick="switchLevel('A1')">A1 Level</button>
+            <button class="level-btn" onclick="switchLevel('A2')">A2 Level</button>
+        </div>
+
+        <div id="A1" class="level active">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Unit</th>
+                        <th>Grammatica</th>
+                        <th>Lessico</th>
+                        <th>Comunicazione</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="unit-number">1</td>
+<td><ul>
+                            <li class="tooltip-item">Verbo essere
+                                <div class="tooltip-content">Conjugation of 'essere' (to be): io sono (I am), tu sei (you are), lui/lei è (he/she is), noi siamo (we are), voi siete (you all are), loro sono (they are).</div>
+                            </li>
+
+                            <li class="tooltip-item">Aggettivi in -o/a -e
+                                <div class="tooltip-content">Adjectives ending in -o/-a and -e: nuovo/nuova (new), grande (big/large), interessante (interesting).</div>
+                            </li>
+
+                            <li class="tooltip-item">Articoli
+                                <div class="tooltip-content">Definite and indefinite articles: il, la, i, le (the), un, una (a/an), dei, delle (some).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Saluti
+                                <div class="tooltip-content">Greetings: ciao (hello/hi), buongiorno (good morning), arrivederci (goodbye), a presto (see you soon).</div>
+                            </li>
+
+                            <li class="tooltip-item">Nazionalità
+                                <div class="tooltip-content">Nationalities: italiano/a (Italian), francese (French), spagnolo/a (Spanish).</div>
+                            </li>
+
+                            <li class="tooltip-item">Aggettivi per aspetto fisico
+                                <div class="tooltip-content">Adjectives for physical appearance: alto/a (tall), basso/a (short), biondo/a (blond), bruno/a (dark-haired).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Presentare sé e gli altri
+                                <div class="tooltip-content">Introducing oneself and others: 'Mi chiamo...' (My name is...), 'Lui/Lei è...' (He/She is...), 'Piacere di conoscerti.' (Nice to meet you.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Dire la nazionalità
+                                <div class="tooltip-content">Expressing nationality: 'Sono italiano/a.' (I am Italian.), 'Vengo dall'Italia.' (I come from Italy.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Descrivere l'aspetto fisico
+                                <div class="tooltip-content">Describing physical appearance: 'È alto/a.' (He/She is tall.), 'Ha i capelli biondi.' (He/She has blond hair.), 'È magro/a.' (He/She is thin.)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">2</td>
+<td><ul>
+                            <li class="tooltip-item">Verbo avere
+                                <div class="tooltip-content">Conjugation of 'avere' (to have): io ho (I have), tu hai (you have), lui/lei ha (he/she has), noi abbiamo (we have), voi avete (you all have), loro hanno (they have).</div>
+                            </li>
+
+                            <li class="tooltip-item">Aggettivi possessivi
+                                <div class="tooltip-content">Possessive adjectives: mio/a (my), tuo/a (your), suo/a (his/her), nostro/a (our).</div>
+                            </li>
+
+                            <li class="tooltip-item">Verbi in -are -ere -ire
+                                <div class="tooltip-content">Regular verbs ending in -are, -ere, -ire: parlare (to speak) – parlo, vedere (to see) – vedo, dormire (to sleep) – dormo.</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Espressioni con avere
+                                <div class="tooltip-content">Expressions with 'avere': ho fame (I am hungry), ho sete (I am thirsty), ho sonno (I am sleepy), ho freddo (I am cold).</div>
+                            </li>
+
+                            <li class="tooltip-item">Bar
+                                <div class="tooltip-content">Bar vocabulary: caffè (coffee), cappuccino, cornetto (croissant), brioche.</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Dire l'età
+                                <div class="tooltip-content">Saying one's age: 'Ho vent'anni.' (I am twenty years old.), 'Quanti anni hai?' (How old are you?)</div>
+                            </li>
+
+                            <li class="tooltip-item">Ordinare al bar
+                                <div class="tooltip-content">Ordering at the bar: 'Vorrei un caffè.' (I would like a coffee.), 'Per me un cappuccino.' (A cappuccino for me.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Forma di cortesia
+                                <div class="tooltip-content">Polite expressions: 'Per favore' (Please), 'Grazie' (Thank you), 'Prego' (You're welcome), 'Mi scusi' (Excuse me).</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">3</td>
+<td><ul>
+                            <li class="tooltip-item">Verbi andare/venire/fare
+                                <div class="tooltip-content">Usage of 'andare' (to go): 'Vado a casa.' (I am going home.); 'venire' (to come): 'Vengo da Roma.' (I come from Rome.); 'fare' (to do/make): 'Faccio sport.' (I play sports.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Preposizioni semplici
+                                <div class="tooltip-content">Simple prepositions: a (to/at), di (of/from), da (from/by), in (in), con (with), su (on), per (for), tra (between/among).</div>
+                            </li>
+
+                            <li class="tooltip-item">Avverbi di frequenza
+                                <div class="tooltip-content">Adverbs of frequency: sempre (always), spesso (often), qualche volta (sometimes), mai (never).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Passatempi
+                                <div class="tooltip-content">Hobbies: sport, musica (music), cinema, lettura (reading), viaggi (travel).</div>
+                            </li>
+
+                            <li class="tooltip-item">Giorni della settimana
+                                <div class="tooltip-content">Days of the week: lunedì (Monday), martedì (Tuesday), mercoledì (Wednesday), giovedì (Thursday).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Parlare del tempo libero
+                                <div class="tooltip-content">Talking about free time: 'Nel tempo libero mi piace...' (In my free time, I like to...), 'Di solito il sabato...' (Usually on Saturdays...).</div>
+                            </li>
+
+                            <li class="tooltip-item">Fare/accettare/rifiutare un invito
+                                <div class="tooltip-content">Making/accepting/declining an invitation: 'Vuoi venire...?' (Do you want to come...?), 'Sì, volentieri.' (Yes, gladly.), 'Mi dispiace, non posso.' (I'm sorry, I can't.)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">4</td>
+<td><ul>
+                            <li class="tooltip-item">Il verbo dire
+                                <div class="tooltip-content">Conjugation of 'dire' (to say): dico (I say), dici (you say), dice (he/she says), diciamo (we say), dite (you all say), dicono (they say).</div>
+                            </li>
+
+                            <li class="tooltip-item">Preposizioni articolate (di/a)
+                                <div class="tooltip-content">Articulated prepositions with 'di' and 'a': del, dello, della, dei, degli, delle (of the/to the).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Professioni
+                                <div class="tooltip-content">Professions: insegnante (teacher), medico (doctor), studente (student), impiegato/a (employee).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Parlare di professioni
+                                <div class="tooltip-content">Talking about professions: 'Che lavoro fai?' (What do you do?), 'Faccio l'insegnante.' (I am a teacher.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Dire l'ora
+                                <div class="tooltip-content">Telling the time: 'Che ore sono?' (What time is it?), 'Sono le due e mezza.' (It's half past two.)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">5</td>
+<td><ul>
+                            <li class="tooltip-item">Preposizioni articolate (da in su)
+                                <div class="tooltip-content">Articulated prepositions with 'da', 'in', 'su': dal, dalla, nel, nella, sul, sulla (from the/in the/on the).</div>
+                            </li>
+
+                            <li class="tooltip-item">Il CI di luogo
+                                <div class="tooltip-content">Using 'ci' as a place pronoun: 'Ci vado domani.' (I'll go there tomorrow.)</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Mesi e stagioni
+                                <div class="tooltip-content">Months and seasons: gennaio (January)... dicembre (December), inverno (winter), primavera (spring).</div>
+                            </li>
+
+                            <li class="tooltip-item">Feste e vacanze
+                                <div class="tooltip-content">Holidays and vacations: Natale (Christmas), Pasqua (Easter), Capodanno (New Year's Day).</div>
+                            </li>
+
+                            <li class="tooltip-item">Condizioni meteo
+                                <div class="tooltip-content">Weather conditions: sole (sun), pioggia (rain), neve (snow), nuvole (clouds), vento (wind).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Organizzare un viaggio
+                                <div class="tooltip-content">Planning a trip: 'Quando partiamo?' (When are we leaving?), 'Dove andiamo?' (Where are we going?)</div>
+                            </li>
+
+                            <li class="tooltip-item">Dire che tempo fa
+                                <div class="tooltip-content">Talking about the weather: 'Fa caldo.' (It's hot.), 'Piove.' (It's raining.), 'C'è il sole.' (It's sunny.)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">6</td>
+<td><ul>
+                            <li class="tooltip-item">Aggettivi possessivi con la famiglia
+                                <div class="tooltip-content">Possessive adjectives with family: mio padre (my father), tua sorella (your sister), suoi genitori (his/her parents).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Famiglia
+                                <div class="tooltip-content">Family: madre (mother), padre (father), fratello (brother), sorella (sister), zio/a (uncle/aunt).</div>
+                            </li>
+
+                            <li class="tooltip-item">Aggettivi per il carattere
+                                <div class="tooltip-content">Adjectives for character: simpatico/a (friendly), gentile (kind), timido/a (shy), allegro/a (cheerful).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Descrivere il carattere
+                                <div class="tooltip-content">Describing character: 'È una persona simpatica.' (He/She is a nice person.), 'Ha un carattere allegro.' (He/She has a cheerful personality.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Chiedere/dire l'indirizzo
+                                <div class="tooltip-content">Asking/saying the address: 'Dove abiti?' (Where do you live?), 'Abito in via Roma 23.' (I live at 23 Roma Street.)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">7</td>
+<td><ul>
+                            <li class="tooltip-item">Verbi volere/potere/dovere
+                                <div class="tooltip-content">Modal verbs: 'volere' (to want): 'Voglio uscire.' (I want to go out.), 'potere' (to be able to): 'Posso entrare?' (May I come in?), 'dovere' (to have to): 'Devo studiare.' (I have to study.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Preposizioni per localizzare
+                                <div class="tooltip-content">Prepositions to locate: sopra (above), sotto (below), davanti a (in front of), dietro (behind).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Ristorante
+                                <div class="tooltip-content">Restaurant: menù (menu), primo (first course), secondo (second course), contorno (side dish), dessert.</div>
+                            </li>
+
+                            <li class="tooltip-item">Cibi
+                                <div class="tooltip-content">Foods: pasta, carne (meat), pesce (fish), verdure (vegetables), frutta (fruit).</div>
+                            </li>
+
+                            <li class="tooltip-item">Tavola
+                                <div class="tooltip-content">Table items: piatto (plate), bicchiere (glass), posate (cutlery), tovagliolo (napkin).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Consigliare un piatto
+                                <div class="tooltip-content">Recommending a dish: 'Le consiglio...' (I recommend...), 'Questo piatto è una specialità della casa.' (This dish is a house specialty.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Esprimere preferenza
+                                <div class="tooltip-content">Expressing preference: 'Preferisco...' (I prefer...), 'Mi piace di più...' (I like... more.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Ordinare al ristorante
+                                <div class="tooltip-content">Ordering at a restaurant: 'Per me...' (For me...), 'Vorrei...' (I would like...), 'Il conto per favore.' (The bill, please.)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">8</td>
+<td><ul>
+                            <li class="tooltip-item">Verbi riflessivi
+                                <div class="tooltip-content">Reflexive verbs: svegliarsi (to wake up), vestirsi (to get dressed), lavarsi (to wash oneself).</div>
+                            </li>
+
+                            <li class="tooltip-item">Verbi riflessivi con volere/dovere
+                                <div class="tooltip-content">Reflexive verbs with modal verbs: 'Devo svegliarmi presto.' (I have to wake up early.), 'Voglio vestirmi.' (I want to get dressed.)</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Vestiti e accessori
+                                <div class="tooltip-content">Clothes and accessories: camicia (shirt), pantaloni (trousers), gonna (skirt), scarpe (shoes).</div>
+                            </li>
+
+                            <li class="tooltip-item">Stili di vestiti
+                                <div class="tooltip-content">Clothing styles: elegante (elegant), sportivo (casual), classico (classic).</div>
+                            </li>
+
+                            <li class="tooltip-item">Taglie
+                                <div class="tooltip-content">Sizes: S, M, L, XL, 40, 42, 44.</div>
+                            </li>
+
+                            <li class="tooltip-item">Colori
+                                <div class="tooltip-content">Colors: rosso (red), blu (blue), verde (green), giallo (yellow), bianco (white), nero (black).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Parlare in negozio
+                                <div class="tooltip-content">Speaking in a shop: 'Posso provare...?' (Can I try...?), 'Che taglia porta?' (What size do you wear?)</div>
+                            </li>
+
+                            <li class="tooltip-item">Descrivere un vestito
+                                <div class="tooltip-content">Describing an outfit: 'È di colore...' (It's the color...), 'È a righe/a quadri.' (It's striped/checked.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Consigliare un vestito
+                                <div class="tooltip-content">Recommending an outfit: 'Le sta bene.' (It suits you.), 'Questo colore le dona.' (This color suits you.)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">9</td>
+<td><ul>
+                            <li class="tooltip-item">Passato prossimo
+                                <div class="tooltip-content">Present perfect tense: 'Ho mangiato.' (I have eaten.), 'Sono andato/a.' (I went.), 'Abbiamo visto.' (We have seen.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Participi passati regolari
+                                <div class="tooltip-content">Regular past participles: -are → -ato (parlare → parlato), -ere → -uto (vedere → veduto), -ire → -ito (dormire → dormito).</div>
+                            </li>
+
+                            <li class="tooltip-item">Espressioni di tempo
+                                <div class="tooltip-content">Time expressions: ieri (yesterday), l'altro ieri (the day before yesterday), la settimana scorsa (last week).</div>
+                            </li>
+
+                            <li class="tooltip-item">Espressioni di luogo
+                                <div class="tooltip-content">Place expressions: qui (here), lì (there), vicino (near), lontano (far), destra (right), sinistra (left).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Mezzi di trasporto
+                                <div class="tooltip-content">Means of transport: autobus (bus), treno (train), aereo (airplane), metropolitana (subway).</div>
+                            </li>
+
+                            <li class="tooltip-item">Luoghi di una città
+                                <div class="tooltip-content">Places in a city: stazione (station), aeroporto (airport), museo (museum), chiesa (church).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Parlare di fatti passati
+                                <div class="tooltip-content">Talking about past events: 'Ieri sono andato/a a...' (Yesterday I went to...), 'Ho visitato...' (I visited...)</div>
+                            </li>
+
+                            <li class="tooltip-item">Descrivere una città
+                                <div class="tooltip-content">Describing a city: 'La città è grande/piccola.' (The city is big/small.), 'C'è/Ci sono...' (There is/There are...)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">10</td>
+<td><ul>
+                            <li class="tooltip-item">Participi passati irregolari
+                                <div class="tooltip-content">Irregular past participles: fare → fatto (done/made), dire → detto (said), scrivere → scritto (written).</div>
+                            </li>
+
+                            <li class="tooltip-item">Avverbi di tempo col passato
+                                <div class="tooltip-content">Time adverbs with the past: già (already), ancora non (not yet), mai (never), appena (just), sempre (always).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Attività sportive
+                                <div class="tooltip-content">Sports activities: calcio (soccer), nuoto (swimming), tennis, palestra (gym), corsa (running).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Raccontare al passato
+                                <div class="tooltip-content">Narrating in the past: 'Prima ho fatto..., poi sono andato/a...' (First I did..., then I went...)</div>
+                            </li>
+</ul></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="A2" class="level ">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Unit</th>
+                        <th>Grammatica</th>
+                        <th>Lessico</th>
+                        <th>Comunicazione</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="unit-number">1</td>
+<td><ul>
+                            <li class="tooltip-item">Imperativo
+                                <div class="tooltip-content">Imperative mood: 'Parla!' (Speak!), 'Vieni!' (Come!), 'Ascolta!' (Listen!), 'Non correre!' (Don't run!)</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Salute / Medico
+                                <div class="tooltip-content">Health vocabulary: mal di testa (headache), febbre (fever), raffreddore (cold).</div>
+                            </li>
+
+                            <li class="tooltip-item">Corpo umano
+                                <div class="tooltip-content">Human body: testa (head), braccia (arms), gambe (legs), occhi (eyes), bocca (mouth).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Dare istruzioni e consigli
+                                <div class="tooltip-content">Giving instructions and advice: 'Gira a destra.' (Turn right.), 'Vai dritto.' (Go straight.), 'Dovresti riposare.' (You should rest.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Dare ordini e divieti
+                                <div class="tooltip-content">Giving orders and prohibitions: 'Non fumare!' (Don't smoke!), 'Non correre!' (Don't run!), 'Aspetta!' (Wait!)</div>
+                            </li>
+
+                            <li class="tooltip-item">Parlare di salute
+                                <div class="tooltip-content">Talking about health: 'Non mi sento bene.' (I don't feel well.), 'Ho mal di testa.' (I have a headache.)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">2</td>
+<td><ul>
+                            <li class="tooltip-item">Pronomi diretti
+                                <div class="tooltip-content">Direct object pronouns: lo (him/it), la (her/it), li (them m.), le (them f.); 'Lo vedo.' (I see him/it.), 'La chiamo.' (I call her/it.)</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Cinema / Film
+                                <div class="tooltip-content">Cinema vocabulary: attore (actor), regista (director), trama (plot), genere (genre).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Raccontare un film
+                                <div class="tooltip-content">Talking about a film: 'Il film parla di...' (The film is about...), 'La storia è ambientata...' (The story is set in...)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">3</td>
+<td><ul>
+                            <li class="tooltip-item">Imperativo + Pronomi
+                                <div class="tooltip-content">Imperative with pronouns: 'Dimmi.' (Tell me.), 'Dammi.' (Give me.), 'Alzati.' (Get up.), 'Vestiti.' (Get dressed.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Verbo METTERCI
+                                <div class="tooltip-content">Using 'metterci': 'Ci metto 10 minuti.' (It takes me 10 minutes.), 'Quanto ci metti?' (How long do you take?)</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Mezzi di trasporto / biglietti
+                                <div class="tooltip-content">Transportation/tickets: treno (train), autobus (bus), biglietto (ticket), abbonamento (pass).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Comprare un biglietto
+                                <div class="tooltip-content">Buying a ticket: 'Vorrei un biglietto per...' (I would like a ticket to...), 'A che ora parte?' (What time does it leave?)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">4</td>
+<td><ul>
+                            <li class="tooltip-item">Imperfetto
+                                <div class="tooltip-content">Imperfect tense: parlavo (I was speaking), mangiavo (I was eating), dormivo (I was sleeping).</div>
+                            </li>
+
+                            <li class="tooltip-item">Imperfetto VS Passato Prossimo
+                                <div class="tooltip-content">Imperfect vs. Present Perfect: 'Mentre studiavo ho sentito un rumore.' (While I was studying, I heard a noise.)</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Luoghi di vacanza
+                                <div class="tooltip-content">Vacation spots: mare (sea), montagna (mountains), lago (lake), città d'arte (art city).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Descrivere abitudini del passato
+                                <div class="tooltip-content">Describing past habits: 'Da piccolo giocavo sempre...' (When I was little, I always played...)</div>
+                            </li>
+
+                            <li class="tooltip-item">Descrivere luoghi al passato
+                                <div class="tooltip-content">Describing places in the past tense: La città era molto piccola...</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">5</td>
+<td><ul>
+                            <li class="tooltip-item">Pronomi diretti + passato prossimo
+                                <div class="tooltip-content">Direct pronouns with past tense: 'L'ho visto.' (I saw him/it.), 'Li ho comprati.' (I bought them.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Stare + gerundio
+                                <div class="tooltip-content">Present continuous: 'Sto mangiando.' (I am eating.), 'Sta piovendo.' (It is raining.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Stare PER + infinito
+                                <div class="tooltip-content">'Stare per' + infinitive: 'Sto per uscire.' (I am about to leave.), 'Sta per piovere.' (It's about to rain.)</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Musica
+                                <div class="tooltip-content">Music: generi musicali (music genres), strumenti (instruments), cantante (singer).</div>
+                            </li>
+
+                            <li class="tooltip-item">Stati d'animo
+                                <div class="tooltip-content">Emotional states: felice (happy), triste (sad), arrabbiato/a (angry), stanco/a (tired).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Descrivere azioni in corso
+                                <div class="tooltip-content">Describing ongoing actions: 'Che stai facendo?' (What are you doing?), 'Sto studiando.' (I am studying.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Parlare di musica
+                                <div class="tooltip-content">Talking about music: 'Mi piace la musica classica.' (I like classical music.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Descrivere stati d'animo
+                                <div class="tooltip-content">Describing moods: Sono felice perché..., Mi sento stanco/a</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">6</td>
+<td><ul>
+                            <li class="tooltip-item">Verbi riflessivi reciproci
+                                <div class="tooltip-content">Reciprocal reflexive verbs: 'vedersi' (to see each other): 'Ci vediamo domani.' (We'll see each other tomorrow.), 'amarsi' (to love each other).</div>
+                            </li>
+
+                            <li class="tooltip-item">Verbi riflessivi + passato
+                                <div class="tooltip-content">Reflexive verbs in the past: 'Mi sono svegliato/a.' (I woke up.), 'Si è vestito/a.' (He/She got dressed.)</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Posta / Banca
+                                <div class="tooltip-content">Post office/bank: sportello (counter), conto (account), bonifico (transfer), francobollo (stamp).</div>
+                            </li>
+
+                            <li class="tooltip-item">Documenti
+                                <div class="tooltip-content">Documents: carta d'identità (ID card), passaporto (passport), patente (driver's license).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Offrire / dare aiuto
+                                <div class="tooltip-content">Offering/giving help: 'Posso aiutarti?' (Can I help you?), 'Hai bisogno di una mano?' (Do you need a hand?)</div>
+                            </li>
+
+                            <li class="tooltip-item">Accettare / rifiutare aiuto
+                                <div class="tooltip-content">Accepting/declining help: 'Sì, grazie.' (Yes, thank you.), 'No, grazie, ce la faccio.' (No, thanks, I can manage.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Scrivere lettere / email
+                                <div class="tooltip-content">Writing letters/emails: 'Gentile...' (Dear...), 'Cordiali saluti.' (Kind regards.)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">7</td>
+<td><ul>
+                            <li class="tooltip-item">Pronomi indiretti
+                                <div class="tooltip-content">Indirect object pronouns: mi (to me), ti (to you), gli (to him), le (to her), ci (to us), vi (to you all), gli (to them).</div>
+                            </li>
+
+                            <li class="tooltip-item">Verbo VOLERCI
+                                <div class="tooltip-content">Using 'volerci': 'Ci vuole pazienza.' (It takes patience.), 'Ci vogliono due ore.' (It takes two hours.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Pronomi indiretti + imperativo
+                                <div class="tooltip-content">Indirect pronouns with imperative: 'Dammi.' (Give me.), 'Digli.' (Tell him.), 'Prestale.' (Lend her.)</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Strade / automobile
+                                <div class="tooltip-content">Streets/car: incrocio (intersection), semaforo (traffic light), rotonda (roundabout), parcheggio (parking lot).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Comunicare il tempo necessario
+                                <div class="tooltip-content">Communicating required time: 'Quanto ci vuole per...?' (How long does it take to...?), 'Ci vogliono 20 minuti.' (It takes 20 minutes.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Raccontare un viaggio
+                                <div class="tooltip-content">Describing a journey: Sono partito/a da..., Ho visitato...</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">8</td>
+<td><ul>
+                            <li class="tooltip-item">Preposizioni casa
+                                <div class="tooltip-content">Prepositions for house: sopra (above), sotto (below), accanto a (next to), di fronte a (opposite).</div>
+                            </li>
+
+                            <li class="tooltip-item">Articolo partitivo plurale
+                                <div class="tooltip-content">Plural partitive articles: dei, degli, delle ('Ho comprato delle mele.' - 'I bought some apples.')</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Casa
+                                <div class="tooltip-content">House: stanze (rooms), mobili (furniture), elettrodomestici (appliances).</div>
+                            </li>
+
+                            <li class="tooltip-item">Annunci immobiliari
+                                <div class="tooltip-content">Real estate ads: monolocale (studio), bilocale (one-bedroom apartment), arredato (furnished).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Descrivere una casa
+                                <div class="tooltip-content">Describing a house: 'L'appartamento è composto da...' (The apartment consists of...)</div>
+                            </li>
+
+                            <li class="tooltip-item">Chiedere informazioni casa
+                                <div class="tooltip-content">Asking about a house: 'Quanto è l'affitto?' (How much is the rent?), 'Le spese sono incluse?' (Are utilities included?)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">9</td>
+<td><ul>
+                            <li class="tooltip-item">Pronome NE: quantità
+                                <div class="tooltip-content">Using 'ne' for quantity: 'Ne prendo due.' (I'll take two of them.), 'Ne parliamo dopo.' (We'll talk about it later.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Pronomi indiretti + passato
+                                <div class="tooltip-content">Indirect pronouns with past tense: 'Mi ha detto.' (He/She told me.), 'Gli ho dato.' (I gave him.)</div>
+                            </li>
+
+                            <li class="tooltip-item">CE + lo + avere
+                                <div class="tooltip-content">Expressions with 'ce' + 'lo' + 'avere': 'Ce l'ho.' (I have it.), 'Ce l'hai.' (You have it.), 'Ce l'ha.' (He/She has it.)</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Spesa
+                                <div class="tooltip-content">Shopping: supermercato (supermarket), prodotti (products), prezzi (prices), offerte (specials).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Fare la spesa
+                                <div class="tooltip-content">Doing the shopping: 'Quanto costa?' (How much does it cost?), 'Ne prendo un chilo.' (I'll take a kilo of it.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Dire una quantità
+                                <div class="tooltip-content">Talking about quantities: un etto di, un chilo di</div>
+                            </li>
+
+                            <li class="tooltip-item">Esprimere possesso
+                                <div class="tooltip-content">Expressing possession: Ce l'hai una penna? Sì/No</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">10</td>
+<td><ul>
+                            <li class="tooltip-item">Futuro semplice
+                                <div class="tooltip-content">Simple future tense: parlerò (I will speak), mangerò (I will eat), partirò (I will leave), sarò (I will be).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Relazioni interpersonali
+                                <div class="tooltip-content">Interpersonal relationships: amicizia (friendship), amore (love), conflitto (conflict), accordo (agreement).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Fare progetti
+                                <div class="tooltip-content">Making plans: 'L'anno prossimo andrò...' (Next year I will go...)</div>
+                            </li>
+
+                            <li class="tooltip-item">Fare previsioni
+                                <div class="tooltip-content">Making predictions: 'Penso che pioverà.' (I think it will rain.), 'Domani farà caldo.' (Tomorrow it will be hot.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Esprimere dubbi
+                                <div class="tooltip-content">Expressing doubts: 'Non sono sicuro/a.' (I'm not sure.), 'Forse verrò.' (Maybe I will come.)</div>
+                            </li>
+</ul></td></tr>
+                    <tr>
+                        <td class="unit-number">11</td>
+<td><ul>
+                            <li class="tooltip-item">Comparativi
+                                <div class="tooltip-content">Comparatives: più/meno... di (more/less... than), tanto... quanto (as... as).</div>
+                            </li>
+
+                            <li class="tooltip-item">Superlativi
+                                <div class="tooltip-content">Superlatives: il/la più... (the most...), -issimo/a (very.../extremely...).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Generi e programmi tv
+                                <div class="tooltip-content">TV genres and programs: telegiornale (news), documentario (documentary), serie TV (TV series).</div>
+                            </li>
+</ul></td><td><ul>
+                            <li class="tooltip-item">Esprimere preferenze
+                                <div class="tooltip-content">Expressing preferences: 'Preferisco... a...' (I prefer... to...), 'Mi piace di più...' (I like... more.)</div>
+                            </li>
+
+                            <li class="tooltip-item">Pro e contro
+                                <div class="tooltip-content">Pros and cons: Da un lato... dall'altro...</div>
+                            </li>
+</ul></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="info-text">Hover over any item to see examples</p>
+    </div>
+    
+    <script>
+        function switchLevel(level) {
+            document.querySelectorAll('.level-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(level)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            document.querySelectorAll('.level').forEach(div => {
+                div.classList.remove('active');
+            });
+            document.getElementById(level).classList.add('active');
+        }
+    </script>
+</body>
+</html>
