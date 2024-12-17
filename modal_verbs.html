@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italian Language Learning System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f6f9fc 0%, #edf2f7 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: #2196f3;
+            color: white;
+            box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #1976d2;
+            transform: translateY(-1px);
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .question {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .question-number {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .question h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .hint-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .hint-button {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .hint-button:hover {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .hint-content {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            border-left: 4px solid #fbbf24;
+            color: #334155;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #2196f3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2196f3 0%, #1976d2 100%);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .feedback {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback.correct {
+            background: #ecfdf5;
+            color: #047857;
+            border-left: 4px solid #059669;
+        }
+
+        .feedback.incorrect {
+            background: #fef2f2;
+            color: #b91c1c;
+            border-left: 4px solid #dc2626;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .key-concepts {
+            background: linear-gradient(to right, #f8f9fa, #ffffff);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .key-concepts h2 {
+            color: #1e88e5;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #1e88e5;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Enhanced review section styles */
+        .review-item {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid #e9ecef;
+        }
+
+        .review-question {
+            font-size: 1.1rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .review-answer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-answer, .correct-answer {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        .user-answer {
+            border-left: 4px solid #ef4444;
+        }
+
+        .correct-answer {
+            border-left: 4px solid #22c55e;
+        }
+
+        .answer-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .answer-text {
+            font-size: 1.1rem;
+            color: #1e293b;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+            color: #475569;
+        }
+
+        .restart-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Italian Language Learning System</h1>
+            <button id="startQuizBtn" class="btn btn-primary">Start Quiz</button>
+        </div>
+
+        <div id="studyGuide" class="content">
+            <!-- Add Key Concepts Review Section at the top -->
+            <div class="key-concepts">
+                <h2>Key Concepts Review</h2>
+                <div class="study-item">
+                    <h4>Formula Pattern</h4>
+                    <p>Modal Verb + Infinitive Verb + Indirect Pronoun + Direct Pronoun (lo) + Time Expression (optional)</p>
+                    <p>Example: devo (modal) + dire (infinitive) + gli (indirect) + lo (direct) = devo dirglielo</p>
+                </div>
+                <div class="study-item" style="margin-top: 20px;">
+                    <h4>Common Patterns to Remember</h4>
+                    <ul>
+                        <li>Indirect pronouns (gli, le, mi, ti, ci, vi) always come before 'lo'</li>
+                        <li>When adding pronouns to infinitive verbs, drop the final 'e'</li>
+                        <li>Time expressions (oggi, domani, adesso) always come at the end</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section" style="margin-bottom: 40px;">
+                <h2 style="margin-bottom: 20px;">Modal Verbs</h2>
+                <div class="study-item" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px;">Dovere (Must)</h4>
+                    <p style="margin-bottom: 5px;">io devo - I must</p>
+                    <p style="margin-bottom: 5px;">tu devi - you must</p>
+                    <p style="margin-bottom: 5px;">lui/lei deve - he/she must</p>
+                    <p style="margin-bottom: 5px;">noi dobbiamo - we must</p>
+                    <p style="margin-bottom: 5px;">voi dovete - you (pl) must</p>
+                    <p>loro devono - they must</p>
+                </div>
+                <div class="study-item" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px;">Potere (Can)</h4>
+                    <p style="margin-bottom: 5px;">io posso - I can</p>
+                    <p style="margin-bottom: 5px;">tu puoi - you can</p>
+                    <p style="margin-bottom: 5px;">lui/lei può - he/she can</p>
+                    <p style="margin-bottom: 5px;">noi possiamo - we can</p>
+                    <p style="margin-bottom: 5px;">voi potete - you (pl) can</p>
+                    <p>loro possono - they can</p>
+                </div>
+                <div class="study-item">
+                    <h4 style="margin-bottom: 10px;">Volere (Want)</h4>
+                    <p style="margin-bottom: 5px;">io voglio - I want</p>
+                    <p style="margin-bottom: 5px;">tu vuoi - you want</p>
+                    <p style="margin-bottom: 5px;">lui/lei vuole - he/she wants</p>
+                    <p style="margin-bottom: 5px;">noi vogliamo - we want</p>
+                    <p style="margin-bottom: 5px;">voi volete - you (pl) want</p>
+                    <p>loro vogliono - they want</p>
+                </div>
+            </div>
+
+            <div class="section" style="margin-bottom: 40px;">
+                <h2 style="margin-bottom: 20px;">Pronoun Combinations</h2>
+                <div class="study-item">
+                    <h4 style="margin-bottom: 10px;">Basic Combinations</h4>
+                    <p style="margin-bottom: 5px;">me + lo = melo (it to me)</p>
+                    <p style="margin-bottom: 5px;">te + lo = telo (it to you)</p>
+                    <p style="margin-bottom: 5px;">glie + lo = glielo (it to him/her)</p>
+                    <p style="margin-bottom: 5px;">ce + lo = celo (it to us)</p>
+                    <p>ve + lo = velo (it to you all)</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 style="margin-bottom: 20px;">Time Expressions</h2>
+                <div class="study-item">
+                    <h4 style="margin-bottom: 10px;">Common Times</h4>
+                    <p style="margin-bottom: 5px;">adesso - now</p>
+                    <p style="margin-bottom: 5px;">oggi - today</p>
+                    <p style="margin-bottom: 5px;">domani - tomorrow</p>
+                    <p style="margin-bottom: 5px;">stasera - tonight</p>
+                    <p style="margin-bottom: 5px;">subito - immediately</p>
+                    <p>dopo - later</p>
+                </div>
+            </div>
+        </div> <!-- Close studyGuide here -->
+
+        <div id="quiz" class="content quiz-container">
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span>Question <span id="currentQuestionNum">1</span> of <span id="totalQuestions">25</span></span>
+                    <span>Progress: <span id="progressPercent">0</span>%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div id="questionContainer" class="question">
+                <!-- Questions will be inserted here -->
+            </div>
+        </div>
+
+        <div id="results" class="content results-container">
+            <!-- Results will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+    const questions = [
+  {
+    id: 1,
+    english: "I must tell it to him",
+    italian: "devo dirglielo",
+    hint: "Uses: dovere + dire + gli + lo",
+    explanation: "devo (I must) + dire (to tell) + gli (to him) + lo (it)"
+  },
+  {
+    id: 2,
+    english: "Can you give it to me?",
+    italian: "puoi darmelo",
+    hint: "Uses: potere + dare + me + lo",
+    explanation: "puoi (can you) + dare (give) + me (to me) + lo (it)"
+  },
+  {
+    id: 3,
+    english: "She wants to say it to them",
+    italian: "vuole dirlo loro",
+    hint: "Uses: volere + dire + loro + lo",
+    explanation: "vuole (she wants) + dire (to say) + lo (it) + loro (to them)"
+  },
+  {
+    id: 4,
+    english: "We should bring it to her",
+    italian: "dobbiamo portarglielo",
+    hint: "Uses: dovere + portare + glie + lo",
+    explanation: "dobbiamo (we should) + portare (bring) + glie (to her) + lo (it)"
+  },
+  {
+    id: 5,
+    english: "They must tell it to you",
+    italian: "devono dirtelo",
+    hint: "Uses: dovere + dire + te + lo",
+    explanation: "devono (they must) + dire (tell) + te (to you) + lo (it)"
+  },
+  {
+    id: 6,
+    english: "I want to give it to them tomorrow",
+    italian: "voglio darglielo domani",
+    hint: "Uses: volere + dare + gli + lo + domani",
+    explanation: "voglio (I want) + dare (give) + gli (to them) + lo (it) + domani (tomorrow)"
+  },
+  {
+    id: 7,
+    english: "Can she tell it to us?",
+    italian: "puo dircelo",
+    hint: "Uses: potere + dire + ci + lo",
+    explanation: "può (can) + dire (tell) + ci (to us) + lo (it)"
+  },
+  {
+    id: 8,
+    english: "We want to bring it to you",
+    italian: "vogliamo portartelo",
+    hint: "Uses: volere + portare + te + lo",
+    explanation: "vogliamo (we want) + portare (bring) + te (to you) + lo (it)"
+  },
+  {
+    id: 9,
+    english: "You must give it to her",
+    italian: "devi darglielo",
+    hint: "Uses: dovere + dare + glie + lo",
+    explanation: "devi (you must) + dare (give) + glie (to her) + lo (it)"
+  },
+  {
+    id: 10,
+    english: "They want to tell it to me",
+    italian: "vogliono dirmelo",
+    hint: "Uses: volere + dire + me + lo",
+    explanation: "vogliono (they want) + dire (tell) + me (to me) + lo (it)"
+  },
+  {
+    id: 11,
+    english: "Can I bring it to them?",
+    italian: "posso portarglielo",
+    hint: "Uses: potere + portare + gli + lo",
+    explanation: "posso (can I) + portare (bring) + gli (to them) + lo (it)"
+  },
+  {
+    id: 12,
+    english: "She must give it to us",
+    italian: "deve darcelo",
+    hint: "Uses: dovere + dare + ci + lo",
+    explanation: "deve (she must) + dare (give) + ci (to us) + lo (it)"
+  },
+  {
+    id: 13,
+    english: "We can tell it to him today",
+    italian: "possiamo dirglielo oggi",
+    hint: "Uses: potere + dire + gli + lo + oggi",
+    explanation: "possiamo (we can) + dire (tell) + gli (to him) + lo (it) + oggi (today)"
+  },
+  {
+    id: 14,
+    english: "You want to bring it to them",
+    italian: "vuoi portarglielo",
+    hint: "Uses: volere + portare + gli + lo",
+    explanation: "vuoi (you want) + portare (bring) + gli (to them) + lo (it)"
+  },
+  {
+    id: 15,
+    english: "They should give it to you tomorrow",
+    italian: "devono dartelo domani",
+    hint: "Uses: dovere + dare + te + lo + domani",
+    explanation: "devono (they should) + dare (give) + te (to you) + lo (it) + domani (tomorrow)"
+  },
+  {
+    id: 16,
+    english: "I can tell it to her now",
+    italian: "posso dirglielo adesso",
+    hint: "Uses: potere + dire + gli + lo + adesso",
+    explanation: "posso (I can) + dire (tell) + gli (to her) + lo (it) + adesso (now)"
+  },
+  {
+    id: 17,
+    english: "We want to give it to them",
+    italian: "vogliamo darglielo",
+    hint: "Uses: volere + dare + gli + lo",
+    explanation: "vogliamo (we want) + dare (give) + gli (to them) + lo (it)"
+  },
+  {
+    id: 18,
+    english: "She must bring it to me",
+    italian: "deve portarmelo",
+    hint: "Uses: dovere + portare + me + lo",
+    explanation: "deve (she must) + portare (bring) + me (to me) + lo (it)"
+  },
+  {
+    id: 19,
+    english: "Can they give it to us?",
+    italian: "possono darcelo",
+    hint: "Uses: potere + dare + ci + lo",
+    explanation: "possono (can they) + dare (give) + ci (to us) + lo (it)"
+  },
+  {
+    id: 20,
+    english: "You should tell it to them today",
+    italian: "dovresti dirglielo oggi",
+    hint: "Uses: dovere (conditional) + dire + gli + lo + oggi",
+    explanation: "dovresti (you should) + dire (tell) + gli (to them) + lo (it) + oggi (today)"
+  },
+  {
+    id: 21,
+    english: "I want to bring it to you tomorrow",
+    italian: "voglio portartelo domani",
+    hint: "Uses: volere + portare + te + lo + domani",
+    explanation: "voglio (I want) + portare (bring) + te (to you) + lo (it) + domani (tomorrow)"
+  },
+  {
+    id: 22,
+    english: "We can give it to her",
+    italian: "possiamo darglielo",
+    hint: "Uses: potere + dare + gli + lo",
+    explanation: "possiamo (we can) + dare (give) + gli (to her) + lo (it)"
+  },
+  {
+    id: 23,
+    english: "They must tell it to us now",
+    italian: "devono dircelo adesso",
+    hint: "Uses: dovere + dire + ci + lo + adesso",
+    explanation: "devono (they must) + dire (tell) + ci (to us) + lo (it) + adesso (now)"
+  },
+  {
+    id: 24,
+    english: "She wants to bring it to them",
+    italian: "vuole portarglielo",
+    hint: "Uses: volere + portare + gli + lo",
+    explanation: "vuole (she wants) + portare (bring) + gli (to them) + lo (it)"
+  },
+  {
+    id: 25,
+    english: "Can you tell it to her today?",
+    italian: "puoi dirglielo oggi",
+    hint: "Uses: potere + dire + gli + lo + oggi",
+    explanation: "puoi (can you) + dire (tell) + gli (to her) + lo (it) + oggi (today)"
+  }
+];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let quizHistory = [];
+
+        const studyGuideSection = document.getElementById('studyGuide');
+        const quizSection = document.getElementById('quiz');
+        const resultsSection = document.getElementById('results');
+        const startQuizBtn = document.getElementById('startQuizBtn');
+        const questionContainer = document.getElementById('questionContainer');
+        const progressFill = document.querySelector('.progress-fill');
+
+        const normalizeAnswer = (answer) => {
+            return answer.toLowerCase().trim().replace(/[.,!?]$/, '');
+        };
+
+        const updateProgress = () => {
+            const progress = (currentQuestion / questions.length) * 100;
+            progressFill.style.width = `${progress}%`;
+        };
+
+        const displayQuestion = () => {
+            const question = questions[currentQuestion];
+            const questionNum = currentQuestion + 1;
+
+            questionContainer.innerHTML = `
+                <div class="question-number">Question ${questionNum}</div>
+                <h3>${question.english}</h3>
+                <div class="hint-container">
+                    <button class="hint-button" onclick="toggleHint()">
+                        <i class="fas fa-lightbulb"></i>
+                        Show Hint
+                    </button>
+                    <div class="hint-content">${question.hint}</div>
+                </div>
+                <input type="text" class="input-field" placeholder="Type your answer in Italian..."
+                       autocomplete="off" autofocus>
+                <button class="btn btn-primary" onclick="checkAnswer()">Check Answer</button>
+            `;
+
+            document.getElementById('currentQuestionNum').textContent = questionNum;
+            document.getElementById('totalQuestions').textContent = questions.length;
+            document.getElementById('progressPercent').textContent = Math.round((currentQuestion / questions.length) * 100);
+            updateProgress();
+        };
+
+        const toggleHint = () => {
+            const hintContent = document.querySelector('.hint-content');
+            const hintButton = document.querySelector('.hint-button');
+
+            if (hintContent.style.display === 'block') {
+                hintContent.style.display = 'none';
+                hintButton.innerHTML = '<i class="fas fa-lightbulb"></i> Show Hint';
+            } else {
+                hintContent.style.display = 'block';
+                hintButton.innerHTML = '<i class="fas fa-lightbulb"></i> Hide Hint';
+            }
+        };
+
+        const showFeedback = (isCorrect) => {
+            const question = questions[currentQuestion];
+            const feedback = document.createElement('div');
+            feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedback.innerHTML = `
+                <h4>${isCorrect ? 'Correct!' : 'Not quite right'}</h4>
+                <p>Correct answer: ${question.italian}</p>
+                <p>${question.explanation}</p>
+                ${currentQuestion < questions.length - 1 
+                    ? '<button class="btn btn-primary" onclick="nextQuestion()">Next Question</button>'
+                    : '<button class="btn btn-primary" onclick="showResults()">See Results</button>'
+                }
+            `;
+            questionContainer.appendChild(feedback);
+        };
+
+        const checkAnswer = () => {
+            const input = questionContainer.querySelector('.input-field');
+            const userAnswer = normalizeAnswer(input.value);
+            const correctAnswer = normalizeAnswer(questions[currentQuestion].italian);
+            const isCorrect = userAnswer === correctAnswer;
+
+            if (isCorrect) score++;
+
+            quizHistory.push({
+                question: questions[currentQuestion],
+                userAnswer: userAnswer,
+                isCorrect: isCorrect
+            });
+
+            input.disabled = true;
+            showFeedback(isCorrect);
+        };
+
+        const nextQuestion = () => {
+            currentQuestion++;
+            displayQuestion();
+        };
+
+        const analyzeMistakes = () => {
+            const mistakes = quizHistory.filter(h => !h.isCorrect);
+            const mistakesByCategory = {};
+
+            // Category logic here if needed (questions don't have 'category' by default)
+            // This won't break anything if category is not used.
+
+            return mistakesByCategory;
+        };
+
+        const getLearningRecommendations = (mistakesByCategory) => {
+            const recommendations = [];
+
+            // This is only relevant if categories were defined in questions
+            // Safe to leave as is
+
+            return recommendations;
+        };
+
+        const showResults = () => {
+            quizSection.style.display = 'none';
+            resultsSection.style.display = 'block';
+
+            const percentage = (score / questions.length) * 100;
+            const mistakes = quizHistory.filter(h => !h.isCorrect);
+
+            let resultsHtml = `
+                <div class="score-card">
+                    <h2>Final Score: ${Math.round(percentage)}%</h2>
+                    <p>You got ${score} out of ${questions.length} questions correct</p>
+                </div>
+            `;
+
+            if (mistakes.length > 0) {
+                resultsHtml += `
+                    <div class="section">
+                        <h2>Areas for Review</h2>
+                        ${mistakes.map(mistake => `
+                            <div class="review-item">
+                                <div class="review-question">${mistake.question.english}</div>
+                                <div class="review-answer">
+                                    <div class="user-answer">
+                                        <div class="answer-label">Your Answer:</div>
+                                        <div class="answer-text">${mistake.userAnswer}</div>
+                                    </div>
+                                    <div class="correct-answer">
+                                        <div class="answer-label">Correct Answer:</div>
+                                        <div class="answer-text">${mistake.question.italian}</div>
+                                    </div>
+                                </div>
+                                <div class="explanation">${mistake.question.explanation}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            resultsHtml += `
+                <div class="restart-section">
+                    <button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+                </div>
+            `;
+
+            resultsSection.innerHTML = resultsHtml;
+        };
+
+        const restartQuiz = () => {
+            currentQuestion = 0;
+            score = 0;
+            quizHistory = [];
+            resultsSection.style.display = 'none';
+            studyGuideSection.style.display = 'block';
+            startQuizBtn.style.display = 'block';
+        };
+
+        startQuizBtn.addEventListener('click', () => {
+            studyGuideSection.style.display = 'none';
+            quizSection.style.display = 'block';
+            displayQuestion();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const activeInput = document.activeElement;
+                if (activeInput && activeInput.classList.contains('input-field') && !activeInput.disabled) {
+                    checkAnswer();
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            quizSection.style.display = 'none';
+            resultsSection.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
