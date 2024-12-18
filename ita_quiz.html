@@ -555,52 +555,45 @@
     }
 
     function displayTopics() {
-    const topicGrid = document.getElementById('topicSelection');
-    let selectedTopic = null;
-    
-    // Create the grid of topics
-    topicGrid.innerHTML = `
-        ${Object.entries(topicsData).map(([topic, questions]) => `
-            <div class="topic-card" data-topic="${topic}">
-                <div class="topic-card-content">
-                    <div>
-                        <h2>${topic}</h2>
-                        <div class="topic-count">${questions.length} questions available</div>
+        const topicGrid = document.getElementById('topicSelection');
+        let selectedTopic = null;
+        
+        topicGrid.innerHTML = `
+            ${Object.entries(topicsData).map(([topic, questions]) => `
+                <div class="topic-card" data-topic="${topic}">
+                    <div class="topic-card-content">
+                        <div>
+                            <h2>${topic}</h2>
+                            <div class="topic-count">${questions.length} questions available</div>
+                        </div>
+                        <div class="topic-card-check"></div>
                     </div>
-                    <div class="topic-card-check"></div>
                 </div>
+            `).join('')}
+            <div class="topic-selection-footer">
+                <button class="start-quiz-btn" disabled>Start Quiz</button>
             </div>
-        `).join('')}
-        <div class="topic-selection-footer">
-            <button class="start-quiz-btn" disabled>Start Quiz</button>
-        </div>
-    `;
-    
-    // Add click handlers for topic cards
-    const topicCards = document.querySelectorAll('.topic-card');
-    const startButton = document.querySelector('.start-quiz-btn');
-    
-    topicCards.forEach(card => {
-        card.addEventListener('click', () => {
-            // Remove selection from other cards
-            topicCards.forEach(c => c.classList.remove('selected'));
-            // Select this card
-            card.classList.add('selected');
-            // Update selected topic
-            selectedTopic = card.dataset.topic;
-            // Enable and show start button
-            startButton.disabled = false;
-            startButton.classList.add('visible');
+        `;
+        
+        const topicCards = document.querySelectorAll('.topic-card');
+        const startButton = document.querySelector('.start-quiz-btn');
+        
+        topicCards.forEach(card => {
+            card.addEventListener('click', () => {
+                topicCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedTopic = card.dataset.topic;
+                startButton.disabled = false;
+                startButton.classList.add('visible');
+            });
         });
-    });
-    
-    // Add click handler for start button
-    startButton.addEventListener('click', () => {
-        if (selectedTopic) {
-            startQuiz(selectedTopic);
-        }
-    });
-}
+        
+        startButton.addEventListener('click', () => {
+            if (selectedTopic) {
+                startQuiz(selectedTopic);
+            }
+        });
+    }
 
     function startQuiz(topic) {
         currentTopic = topic;
@@ -610,11 +603,44 @@
         currentQuestion = 0;
         score = 0;
         quizHistory = [];
-        
+
         document.querySelector('.header h1').textContent = `Italian Quiz - ${topic}`;
         document.getElementById('topicSelection').style.display = 'none';
         document.getElementById('quiz').style.display = 'block';
-        
+
+        let actionsDiv = document.getElementById('quizActions');
+        if (!actionsDiv) {
+            actionsDiv = document.createElement('div');
+            actionsDiv.id = 'quizActions';
+            actionsDiv.style.display = 'flex';
+            actionsDiv.style.justifyContent = 'space-between';
+            actionsDiv.style.marginBottom = '20px';
+
+            const homeBtn = document.createElement('button');
+            homeBtn.textContent = 'Home';
+            homeBtn.style.fontSize = '0.8rem';
+            homeBtn.style.padding = '0.3rem 0.6rem';
+            homeBtn.style.background = '#f0f0f0';
+            homeBtn.style.border = '1px solid #ccc';
+            homeBtn.style.cursor = 'pointer';
+            homeBtn.onclick = returnToTopics;
+
+            const endBtn = document.createElement('button');
+            endBtn.textContent = 'End Quiz';
+            endBtn.style.fontSize = '0.8rem';
+            endBtn.style.padding = '0.3rem 0.6rem';
+            endBtn.style.background = '#f0f0f0';
+            endBtn.style.border = '1px solid #ccc';
+            endBtn.style.cursor = 'pointer';
+            endBtn.onclick = showResults;
+
+            actionsDiv.appendChild(homeBtn);
+            actionsDiv.appendChild(endBtn);
+
+            const quizDiv = document.getElementById('quiz');
+            quizDiv.insertBefore(actionsDiv, quizDiv.firstChild);
+        }
+
         displayQuestion();
     }
 
@@ -634,7 +660,7 @@
                 <div class="hint-content">${question.hint}</div>
             </div>
             <input type="text" class="input-field" placeholder="Type your answer in Italian..."
-                   autocomplete="off" autofocus>
+                   autocomplete="off" autofocus style="width: 80%; max-width: 400px;">
             <button class="btn btn-primary" onclick="checkAnswer()">Check Answer</button>
         `;
 
@@ -739,10 +765,8 @@
     }
 
     function returnToTopics() {
-        document.querySelector('.header h1').textContent = 'Rucciro\s Italian Learning Hub';
-        document.getElementById('topicSelection').style.display = 'grid';
-        document.getElementById('quiz').style.display = 'none';
-        document.getElementById('results').style.display = 'none';
+        // Instead of manually resetting everything, just reload the page
+        location.reload();
     }
     </script>
 </body>
