@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Simple Tables</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"/>
+
+<!-- html2canvas for PNG download -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<style>
+  :root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+    --background-color: #f8fafc;
+    --text-color: #1e293b;
+    --header-bg: #1e40af;
+    --section-bg: #3b82f6; 
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    margin: 20px;
+    background: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    position: relative;
+  }
+
+  header.site-header {
+    background: linear-gradient(90deg, #1e3a8a 0%, #60a5fa 100%);
+    padding: 40px 0;
+    text-align: center;
+  }
+
+  .site-logo {
+    font-weight: 800;
+    font-size: 2.2rem;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin: 0;
+  }
+
+  #controlPanel {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    position: relative;
+  }
+
+  #controlPanel label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  #controlPanel select,
+  #controlPanel input[type="file"] {
+    margin-bottom: 20px;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .instructions {
+    font-size: 0.9rem;
+    color: #4b5563;
+    background: #f1f5f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    position: relative;
+  }
+  .instructions p {
+    margin: 0 0 5px;
+  }
+  .instructions p:first-child {
+    color: #000; 
+    font-weight: bold;
+    margin-bottom:10px;
+  }
+  .see-example {
+    color: var(--primary-color);
+    text-decoration: underline;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  button {
+    background: var(--header-bg, #2563eb);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+    margin-right: 10px;
+  }
+  button:hover {
+    background: var(--section-bg, #3b82f6);
+    transform: scale(1.02);
+  }
+
+  #togglePanelBtn {
+    margin-top: 10px;
+  }
+
+  h1.table-title {
+    font-weight: 800;
+    margin: 40px 0;
+    text-align: center;
+    color: var(--header-bg);
+    font-size: 2.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .dataTables_wrapper {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin: 20px auto;
+    max-width: 1400px;
+  }
+
+  table.dataTable {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  table.dataTable thead th {
+    background: var(--header-bg);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    text-align: left;
+    font-size: 1rem;
+    padding: 16px 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    word-wrap: break-word;
+  }
+
+  table.dataTable thead th:first-child {
+    border-top-left-radius: 8px;
+    width: 200px;
+  }
+
+  table.dataTable thead th:last-child {
+    border-top-right-radius: 8px;
+  }
+
+  table.dataTable tbody td {
+    vertical-align: top;
+    padding: 16px 12px;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    border-bottom: 1px solid #e2e8f0;
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 300px;
+  }
+
+  table.dataTable tbody tr {
+    background: #fff;
+    transition: background-color 0.2s ease;
+  }
+
+  table.dataTable tbody tr.odd {
+    background: #f8fafc;
+  }
+
+  table.dataTable tbody tr:hover {
+    background: #f1f5f9;
+  }
+
+  table.dataTable tbody tr td:first-child {
+    background-color: #f0f4fa;
+    max-width: 200px;
+  }
+
+  /* Section Header Styling */
+  tr.section-header td {
+    background: var(--section-bg) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-align: left !important;
+    padding: 14px 12px !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+  }
+
+  table.dataTable tbody tr.section-header td:first-child {
+    background: var(--section-bg) !important;
+  }
+
+  .dataTables_filter {
+    margin-bottom: 20px;
+  }
+
+  .dataTables_filter label {
+    font-weight: 500;
+    color: var(--text-color);
+  }
+
+  .dataTables_filter input {
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-left: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .dataTables_filter input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+
+  .dataTables_length select {
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 6px 8px;
+    margin: 0 8px;
+  }
+
+  .footer-note {
+    margin: 30px auto;
+    max-width: 800px;
+    font-size: 1rem;
+    color: #64748b;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 1024px) {
+    .dataTables_wrapper {
+      padding: 15px;
+      margin: 10px;
+    }
+
+    table.dataTable thead th {
+      font-size: 0.9rem;
+      padding: 12px 8px;
+    }
+
+    table.dataTable tbody td {
+      padding: 12px 8px;
+      font-size: 0.9rem;
+    }
+  }
+
+  #tableContainer {
+    max-width: 1400px;
+    margin: 20px auto 60px auto;
+    position: relative;
+  }
+
+  #bottomControls {
+    max-width:1400px;
+    margin:20px auto;
+    text-align:center;
+  }
+
+  #extraFeatures {
+    margin:20px auto;
+  }
+
+  #columnTogglesPanel {
+    display:none;
+    background:#ffffff;
+    border:1px solid #ccc;
+    padding:10px;
+    border-radius:6px;
+    max-width:300px;
+    margin:20px auto;
+    text-align:left;
+  }
+
+  #filterCheckContainer {
+    margin:20px auto;
+  }
+
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(0,0,0,0.5);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+  }
+
+  .modal-content {
+    background:#fff;
+    border-radius:8px;
+    padding:20px;
+    max-width:600px;
+    width:90%;
+    box-shadow:0 4px 20px rgba(0,0,0,0.2);
+    position:relative;
+  }
+
+  .modal-content h2 {
+    margin-top:0;
+    font-size:1.5rem;
+    margin-bottom:10px;
+    font-weight:700;
+    color:#000;
+  }
+
+  .modal-content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top:10px;
+  }
+
+  .modal-content table, .modal-content th, .modal-content td {
+    border:1px solid #ccc;
+  }
+
+  .modal-content th, .modal-content td {
+    padding:8px;
+    text-align:left;
+  }
+
+  .modal-close-btn {
+    background: var(--header-bg);
+    color:#fff;
+    border:none;
+    border-radius:4px;
+    padding:8px 12px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:20px;
+  }
+
+  /* Example table styling as shown in image */
+  .example-table-title {
+    color:#004aad; /* A blue tone */
+    font-weight:700;
+  }
+
+  .example-table th {
+    color:#b00; /* Red color for column headers */
+    font-weight:700;
+  }
+
+  .example-subheading {
+    color:#0074d9;
+    font-weight:700;
+  }
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1 class="site-logo">Simple Tables</h1>
+</header>
+
+<div id="controlPanel">
+  <div class="instructions">
+    <p>Formatting Your Excel or CSV File: <span class="see-example" id="seeExampleLink">See example</span></p>
+    <p>- First row: <strong>Title</strong></p>
+    <p>- Second row: <strong>Column Headers</strong></p>
+    <p>- Subsequent rows: Data</p>
+    <p>- A <strong>Subheader</strong> row: The first column is non-empty and all other columns are empty.</p>
+  </div>
+
+  <label for="excelFile">Upload an Excel or CSV File:</label>
+  <input type="file" id="excelFile" accept=".xlsx,.csv" />
+
+  <label for="themeSelect">Select Theme:</label>
+  <select id="themeSelect">
+    <option value="light">Light</option>
+    <option value="blue">Blue</option>
+    <option value="corporate">Corporate</option>
+  </select>
+
+  <label for="pageLength">Rows per Page:</label>
+  <select id="pageLength">
+    <option value="10">10</option>
+    <option value="25" selected>25</option>
+    <option value="50">50</option>
+    <option value="75">75</option>
+    <option value="100">100</option>
+  </select>
+  
+  <button id="renderBtn">Render Table</button>
+</div>
+
+<div style="text-align:center;">
+  <button id="togglePanelBtn" style="margin:10px;">Hide Panel</button>
+</div>
+
+<div id="tableContainer" style="display:none;">
+  <h1 class="table-title" id="tableDataTitle" style="display:none;"></h1>
+  <div id="dataTableWrapper" class="dataTables_wrapper" style="display:none;">
+    <table id="dataTable" class="display" style="width:100%">
+      <thead id="tableHead"></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="bottomControls" style="display:none;">
+  <div id="extraFeatures">
+    <button id="downloadPNGBtn">Download PNG</button>
+    <button id="toggleColumnsBtn">Show/Hide Columns</button>
+  </div>
+  <div id="columnTogglesPanel">
+    <h4>Toggle Columns</h4>
+    <div id="columnCheckboxes"></div>
+  </div>
+  <div id="filterCheckContainer" style="display:none;">
+    <label><input type="checkbox" id="enableFiltering" /> Enable Column Filtering</label>
+  </div>
+</div>
+
+<div class="footer-note">
+  <p>This interactive table allows you to explore and analyze your data. Use the search box to filter by any term, or click column headers to sort.</p>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="exampleModal">
+  <div class="modal-content">
+    <h2>Example Formatting</h2>
+    <p>This is an example of how your file might be formatted:</p>
+    <table class="example-table">
+      <tr>
+        <th colspan="3" class="example-table-title">Include Title Here</th>
+      </tr>
+      <tr>
+        <th style="color:red;">Column 1</th>
+        <th style="color:red;">Column 2</th>
+        <th style="color:red;">Column 3</th>
+      </tr>
+      <tr>
+        <td class="example-subheading">Subheading 1 (optional)</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Blah</td><td>Blah</td><td>Blah</td>
+      </tr>
+      <tr>
+        <td>Blah</td><td>Blah</td><td>Blah</td>
+      </tr>
+      <tr>
+        <td class="example-subheading">Subheading 2 (optional)</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Blah</td><td>Blah</td><td>Blah</td>
+      </tr>
+      <tr>
+        <td>Blah</td><td>Blah</td><td>Blah</td>
+      </tr>
+    </table>
+    <button class="modal-close-btn" id="closeModalBtn">Close</button>
+  </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<!-- SheetJS (XLSX parsing) -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script>
+let excelRows = null; 
+let tableTitle = "";
+let columns = [];
+let dataTableInstance = null;
+
+// Modal logic
+const seeExampleLink = document.getElementById('seeExampleLink');
+const exampleModal = document.getElementById('exampleModal');
+const closeModalBtn = document.getElementById('closeModalBtn');
+
+seeExampleLink.addEventListener('click', () => {
+  exampleModal.style.display = 'flex';
+});
+
+closeModalBtn.addEventListener('click', () => {
+  exampleModal.style.display = 'none';
+});
+
+exampleModal.addEventListener('click', (e) => {
+  if (e.target === exampleModal) {
+    exampleModal.style.display = 'none';
+  }
+});
+
+document.getElementById('excelFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  const fileName = file.name.toLowerCase();
+  const reader = new FileReader();
+
+  if (fileName.endsWith('.csv')) {
+    reader.onload = (evt) => {
+      const text = evt.target.result;
+      const workbook = XLSX.read(text, { type: 'string', defval:"" });
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+      excelRows = XLSX.utils.sheet_to_json(worksheet, { header:1, defval:"" });
+    };
+    reader.readAsText(file);
+  } else {
+    reader.onload = (evt) => {
+      const data = new Uint8Array(evt.target.result);
+      const workbook = XLSX.read(data, { type: 'array', defval:"" });
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+      excelRows = XLSX.utils.sheet_to_json(worksheet, { header:1, defval:"" });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+});
+
+function applyTheme(theme) {
+  let background_color, text_color, header_bg;
+  
+  const section_bg = "#3b82f6"; // keep subheader section-bg consistent
+
+  switch (theme) {
+    case 'blue':
+      background_color = "#e0f2fe";
+      text_color = "#0f172a";
+      header_bg = "#1e40af";
+      break;
+    case 'corporate':
+      background_color = "#fafafa";
+      text_color = "#222222";
+      header_bg = "#0a5275";
+      break;
+    default:
+      background_color = "#f8fafc";
+      text_color = "#1e293b";
+      header_bg = "#1e40af";
+  }
+
+  document.documentElement.style.setProperty('--background-color', background_color);
+  document.documentElement.style.setProperty('--text-color', text_color);
+  document.documentElement.style.setProperty('--header-bg', header_bg);
+}
+
+function isSubheaderRow(row) {
+  if (row.length === 0 || columns.length < 1) return false;
+  const firstCell = (row[0] || "").trim();
+  // Check if first column is non-empty and all other columns empty
+  if (firstCell !== "") {
+    for (let c = 1; c < columns.length; c++) {
+      const val = (row[c] || "").trim();
+      if (val !== "") {
+        return false; // Found a non-empty cell in other columns, not a subheader
+      }
+    }
+    return true;
+  }
+  return false;
+}
+
+document.getElementById('renderBtn').addEventListener('click', () => {
+  if (!excelRows || excelRows.length < 2) {
+    alert("Please upload a properly formatted file first.");
+    return;
+  }
+
+  const theme = document.getElementById('themeSelect').value;
+  const pageLength = parseInt(document.getElementById('pageLength').value, 10);
+  applyTheme(theme);
+
+  // Clear existing table if re-rendering
+  if ($.fn.DataTable.isDataTable('#dataTable')) {
+    dataTableInstance.clear().destroy();
+    $('#tableHead').empty();
+    $('#tableBody').empty();
+  }
+
+  tableTitle = excelRows[0].join(" ").trim();
+  if (tableTitle === "") {
+    tableTitle = "Data Table";
+  }
+
+  const titleElement = document.getElementById('tableDataTitle');
+  titleElement.textContent = tableTitle;
+  titleElement.style.display = 'block';
+
+  columns = excelRows[1];
+  let theadHTML = "<tr>";
+  columns.forEach(col => {
+    theadHTML += `<th>${col}</th>`;
+  });
+  theadHTML += "</tr>";
+  document.getElementById('tableHead').innerHTML = theadHTML;
+
+  let tbodyHTML = "";
+  for (let i = 2; i < excelRows.length; i++) {
+    const row = excelRows[i];
+    if (row.length === 0 || row.every(cell => (cell||"").trim() === "")) {
+      continue;
+    }
+
+    if (isSubheaderRow(row)) {
+      // Subheader row
+      const firstCell = (row[0] || "").trim();
+      tbodyHTML += `<tr class='section-header'>`;
+      tbodyHTML += `<td>${firstCell}</td>`;
+      for (let c = 1; c < columns.length; c++) {
+        tbodyHTML += "<td></td>";
+      }
+      tbodyHTML += "</tr>";
+    } else {
+      // Normal row
+      tbodyHTML += "<tr>";
+      for (let c = 0; c < columns.length; c++) {
+        let cellVal = (row[c] || "").toString().replace(/\n/g, "<br>");
+        tbodyHTML += `<td>${cellVal}</td>`;
+      }
+      tbodyHTML += "</tr>";
+    }
+  }
+
+  document.getElementById('tableBody').innerHTML = tbodyHTML;
+
+  document.getElementById('dataTableWrapper').style.display = 'block';
+  document.getElementById('tableContainer').style.display = 'block';
+
+  dataTableInstance = $('#dataTable').DataTable({
+    "pageLength": pageLength,
+    "autoWidth": false,
+    "order": [],
+    "createdRow": function(row, data, dataIndex) {
+      if ($(row).hasClass('section-header')) {
+        $('td:first', row).attr('colspan', this.api().columns().count());
+        $('td:not(:first)', row).css('display', 'none');
+      }
+    }
+  });
+
+  // Show bottom controls
+  document.getElementById('bottomControls').style.display = 'block';
+  document.getElementById('filterCheckContainer').style.display = 'block';
+
+  buildColumnToggles();
+
+  $('#enableFiltering').prop('checked', false);
+  removeColumnFilters();
+
+  // Hide the input panel after rendering
+  const panel = document.getElementById('controlPanel');
+  const toggleBtn = document.getElementById('togglePanelBtn');
+  panel.style.display = 'none';
+  toggleBtn.textContent = 'Show Panel';
+});
+
+document.getElementById('togglePanelBtn').addEventListener('click', () => {
+  const panel = document.getElementById('controlPanel');
+  const btn = document.getElementById('togglePanelBtn');
+  if (panel.style.display === 'none') {
+    panel.style.display = 'block';
+    btn.textContent = 'Hide Panel';
+  } else {
+    panel.style.display = 'none';
+    btn.textContent = 'Show Panel';
+  }
+});
+
+function buildColumnToggles() {
+  const container = document.getElementById('columnCheckboxes');
+  container.innerHTML = "";
+  columns.forEach((colName, i) => {
+    const colVisible = dataTableInstance.column(i).visible();
+    container.innerHTML += `
+      <label><input type="checkbox" data-col="${i}" ${colVisible?'checked':''} /> ${colName}</label>
+    `;
+  });
+
+  Array.from(container.querySelectorAll('input[type="checkbox"]')).forEach(cb => {
+    cb.addEventListener('change', (e) => {
+      const colIndex = parseInt(e.target.getAttribute('data-col'),10);
+      dataTableInstance.column(colIndex).visible(e.target.checked);
+    });
+  });
+}
+
+document.getElementById('toggleColumnsBtn').addEventListener('click', () => {
+  const panel = document.getElementById('columnTogglesPanel');
+  panel.style.display = (panel.style.display === 'none' || panel.style.display === '') ? 'block' : 'none';
+});
+
+document.getElementById('downloadPNGBtn').addEventListener('click', () => {
+  const tableContainer = document.getElementById('tableContainer');
+  html2canvas(tableContainer, { scale:2, backgroundColor:null }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = tableTitle.replace(/\s+/g, '_') + ".png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+});
+
+document.getElementById('enableFiltering').addEventListener('change', (e) => {
+  if (e.target.checked) {
+    addColumnFilters();
+  } else {
+    removeColumnFilters();
+  }
+});
+
+function addColumnFilters() {
+  if (!dataTableInstance) return;
+  if (document.querySelector('#dataTable thead tr.column-filters')) return;
+
+  const filterRow = document.createElement('tr');
+  filterRow.classList.add('column-filters');
+  columns.forEach(() => {
+    const th = document.createElement('th');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Filter...';
+    input.style.width = '90%';
+    input.style.fontSize = '0.9rem';
+    input.addEventListener('keyup', function() {
+      const colIndex = $(this).parent().index();
+      dataTableInstance.column(colIndex).search(this.value).draw();
+    });
+    th.appendChild(input);
+    filterRow.appendChild(th);
+  });
+  document.querySelector('#dataTable thead').appendChild(filterRow);
+}
+
+function removeColumnFilters() {
+  if (!dataTableInstance) return;
+  const filterRow = document.querySelector('#dataTable thead tr.column-filters');
+  if (filterRow) {
+    filterRow.remove();
+    dataTableInstance.columns().search('').draw();
+  }
+}
+</script>
+</body>
+</html>
