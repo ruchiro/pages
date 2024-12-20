@@ -526,9 +526,9 @@
             }
         });
 
-        // Add keyboard shortcut for hint (The number 1 will work)
+        // Add keyboard shortcut for hint (The symbol ` will work)
         document.addEventListener('keydown', function hintShortcut(e) {
-            if (e.key.toLowerCase() === '1' && !e.ctrlKey && !e.altKey && !e.metaKey) {
+            if (e.key.toLowerCase() === '`' && !e.ctrlKey && !e.altKey && !e.metaKey) {
                 toggleHint();
             }
         });
