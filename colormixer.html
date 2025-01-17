@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <meta
+    name="description"
+    content="Advanced Color Mixer - Create perfect color palettes for design and data visualization"
+  />
+  <title>Advanced Color Mixer</title>
+
+  <!-- Dependencies -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Base Styles -->
+  <style>
+    /* Modern CSS Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      /* Softer, warmer gradient background */
+      background: linear-gradient(160deg, #fef6e4 0%, #f6e1c3 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Improved accessibility */
+    :focus-visible {
+      outline: 2px solid #14b8a6; /* Teal outline */
+      outline-offset: 2px;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a1a1a1;
+    }
+
+    /* Custom range input styling */
+    input[type="range"] {
+      -webkit-appearance: none;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #14b8a6;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      background: #0d9488;
+      transform: scale(1.1);
+    }
+  </style>
+
+  <!-- Additional Styles (from Part 2) -->
+  <style>
+    /* Tooltip Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .tooltip-content {
+      animation: fadeIn 0.2s ease-out;
+      pointer-events: none;
+    }
+
+    /* Color Swatch Transitions */
+    .color-swatch {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .color-swatch:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Smooth color transitions */
+    .color-preview {
+      transition: background-color 0.3s ease;
+    }
+  </style>
+
+  <!-- Additional Styles (from Part 3) -->
+  <style>
+    /* Card styling */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Palette swatch animations */
+    .palette-swatch {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .palette-swatch:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Copy button animation */
+    .copy-button {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .color-item:hover .copy-button {
+      opacity: 1;
+    }
+
+    /* Success animation */
+    @keyframes copySuccess {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+    }
+    .copy-success {
+      animation: copySuccess 0.3s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Single root element to mount React app -->
+  <div id="root" class="min-h-screen p-4 md:p-8"></div>
+
+  <!-- Consolidated React Code -->
+  <script type="text/babel">
+    /********************
+     * Shared Utilities *
+     ********************/
+    // Color conversion utilities
+    const colorUtils = {
+      // Convert RGB to HSL
+      rgbToHsl: (r, g, b) => {
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h, s;
+        const l = (max + min) / 2;
+
+        if (max === min) {
+          h = s = 0; // Achromatic
+        } else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r:
+              h = (g - b) / d + (g < b ? 6 : 0);
+              break;
+            case g:
+              h = (b - r) / d + 2;
+              break;
+            case b:
+              h = (r - g) / d + 4;
+              break;
+          }
+          h /= 6;
+        }
+        return [h * 360, s * 100, l * 100];
+      },
+
+      // Convert HSL to RGB
+      hslToRgb: (h, s, l) => {
+        h /= 360;
+        s /= 100;
+        l /= 100;
+        let r, g, b;
+
+        if (s === 0) {
+          r = g = b = l; // Achromatic
+        } else {
+          const hue2rgb = (p, q, t) => {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+            return p;
+          };
+          const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+          const p = 2 * l - q;
+          r = hue2rgb(p, q, h + 1 / 3);
+          g = hue2rgb(p, q, h);
+          b = hue2rgb(p, q, h - 1 / 3);
+        }
+        return [
+          Math.round(r * 255),
+          Math.round(g * 255),
+          Math.round(b * 255),
+        ];
+      },
+
+      // Convert RGB to Hex string
+      rgbToHex: (r, g, b) => {
+        return `#${[r, g, b]
+          .map((x) => x.toString(16).padStart(2, '0'))
+          .join('')}`;
+      },
+
+      // Color blindness simulation matrices
+      colorBlindness: {
+        protanopia: [
+          [0.567, 0.433, 0],
+          [0.558, 0.442, 0],
+          [0, 0.242, 0.758],
+        ],
+        deuteranopia: [
+          [0.625, 0.375, 0],
+          [0.7, 0.3, 0],
+          [0, 0.3, 0.7],
+        ],
+        tritanopia: [
+          [0.95, 0.05, 0],
+          [0, 0.433, 0.567],
+          [0, 0.475, 0.525],
+        ],
+      },
+    };
+
+    /******************
+     * Tooltip Component
+     ******************/
+    const Tooltip = ({ children, content }) => (
+      <div className="group relative inline-block">
+        {children}
+        <div className="tooltip-content invisible absolute bottom-full left-1/2 mb-2 w-52 -translate-x-1/2 rounded-lg bg-gray-900 p-2 text-xs text-white opacity-0 shadow-lg group-hover:visible group-hover:opacity-100">
+          {content}
+          <div className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
+        </div>
+      </div>
+    );
+
+    /************************
+     * Color Swatch Component
+     ************************/
+    const ColorSwatch = ({ color, onClick, showHex = true }) => {
+      const hexColor = colorUtils.rgbToHex(...color);
+      const [copied, setCopied] = React.useState(false);
+
+      const handleClick = () => {
+        navigator.clipboard.writeText(hexColor);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1000);
+        if (onClick) onClick(hexColor);
+      };
+
+      return (
+        <div
+          className="color-item flex items-center gap-2 rounded bg-white/10 p-2"
+          onClick={handleClick}
+        >
+          <div
+            className="h-6 w-6 rounded"
+            style={{ backgroundColor: hexColor }}
+          />
+          {showHex && <span className="font-mono text-sm">{hexColor}</span>}
+          <button className={`copy-button ml-auto ${copied ? 'copy-success' : ''}`}>
+            {copied ? '✓' : 'Copy'}
+          </button>
+        </div>
+      );
+    };
+
+    /****************************
+     * Main ColorMixer Component
+     ****************************/
+    const ColorMixer = () => {
+      // State
+      // Changed default color to a pleasant blue (#4285F4)
+      const [rgb, setRgb] = React.useState({ r: 66, g: 133, b: 244 });
+      const [paletteType, setPaletteType] = React.useState('analogous');
+      const [numColors, setNumColors] = React.useState(5);
+      const [colorblindType, setColorblindType] = React.useState('normal');
+
+      // Generate palette based on current settings
+      const generatePalette = () => {
+        const [h, s, l] = colorUtils.rgbToHsl(rgb.r, rgb.g, rgb.b);
+        const colors = [];
+
+        switch (paletteType) {
+          case 'analogous':
+            for (let i = 0; i < numColors; i++) {
+              const newHue = (h + (360 / numColors) * i) % 360;
+              colors.push(colorUtils.hslToRgb(newHue, s, l));
+            }
+            break;
+
+          case 'complementary':
+            // Base color
+            colors.push([rgb.r, rgb.g, rgb.b]);
+            // Direct complement
+            const complement = colorUtils.hslToRgb((h + 180) % 360, s, l);
+            colors.push(complement);
+
+            // Fill in-between if needed
+            for (let i = 1; i < numColors - 1; i++) {
+              const ratio = i / (numColors - 1);
+              colors.push([
+                Math.round(rgb.r * (1 - ratio) + complement[0] * ratio),
+                Math.round(rgb.g * (1 - ratio) + complement[1] * ratio),
+                Math.round(rgb.b * (1 - ratio) + complement[2] * ratio),
+              ]);
+            }
+            break;
+
+          case 'diverging':
+            // Basic approach: fill half from base color, half from complement
+            const midpoint = Math.floor(numColors / 2);
+            const complementHue = (h + 180) % 360;
+            for (let i = 0; i < numColors; i++) {
+              if (i < midpoint) {
+                const ratio = i / midpoint;
+                colors.push(
+                  colorUtils.hslToRgb(
+                    h,
+                    s * (1 - ratio * 0.3),
+                    l + (100 - l) * ratio * 0.7
+                  )
+                );
+              } else if (i === midpoint && numColors % 2 !== 0) {
+                // Middle color for an odd total
+                colors.push(colorUtils.hslToRgb(h, s * 0.2, 90));
+              } else {
+                const ratio = (i - Math.ceil(numColors / 2)) / (numColors - Math.ceil(numColors / 2));
+                colors.push(
+                  colorUtils.hslToRgb(
+                    complementHue,
+                    s * (0.7 + ratio * 0.3),
+                    l + (100 - l) * (1 - ratio) * 0.7
+                  )
+                );
+              }
+            }
+            break;
+
+          case 'sequential':
+            for (let i = 0; i < numColors; i++) {
+              const ratio = i / (numColors - 1);
+              colors.push(colorUtils.hslToRgb(h, s, l * (1 - ratio * 0.7)));
+            }
+            break;
+
+          default:
+            // Fallback
+            colors.push([rgb.r, rgb.g, rgb.b]);
+        }
+
+        // Apply color blindness simulation if needed
+        if (colorblindType !== 'normal') {
+          return colors.map((color) => {
+            const matrix = colorUtils.colorBlindness[colorblindType];
+            if (!matrix) return color; // fallback if not found
+
+            const [r, g, b] = color.map((c) => c / 255);
+            return matrix.map((row) =>
+              Math.round(
+                Math.max(
+                  0,
+                  Math.min(255, (row[0] * r + row[1] * g + row[2] * b) * 255)
+                )
+              )
+            );
+          });
+        }
+
+        return colors;
+      };
+
+      // Export palette in different formats
+      const exportPalette = (format) => {
+        const colors = generatePalette();
+        let output = '';
+
+        switch (format) {
+          case 'css':
+            output = `:root {\n${colors
+              .map(
+                (color, i) => `  --color-${i + 1}: ${colorUtils.rgbToHex(...color)};`
+              )
+              .join('\n')}\n}`;
+            break;
+          case 'scss':
+            output = colors
+              .map(
+                (color, i) => `$color-${i + 1}: ${colorUtils.rgbToHex(...color)};`
+              )
+              .join('\n');
+            break;
+          case 'json':
+            output = JSON.stringify(
+              colors.map((color) => colorUtils.rgbToHex(...color)),
+              null,
+              2
+            );
+            break;
+          default:
+            return;
+        }
+
+        // Trigger download
+        const blob = new Blob([output], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `palette.${format}`;
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+
+      return (
+        <div className="glass-card mx-auto mt-8 max-w-2xl rounded-xl p-6 shadow-lg">
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-gray-800">Color Mixer</h1>
+            <p className="text-gray-500">Create harmonious color palettes for your designs</p>
+          </div>
+
+          {/* Color Picker */}
+          <div className="mb-6 space-y-4">
+            <div
+              className="h-32 w-full rounded-lg"
+              style={{ backgroundColor: colorUtils.rgbToHex(rgb.r, rgb.g, rgb.b) }}
+            />
+
+            <div className="space-y-2">
+              {Object.entries(rgb).map(([channel, value]) => (
+                <div key={channel} className="flex items-center gap-4">
+                  <label className="w-8 font-medium uppercase text-gray-700">{channel}:</label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="255"
+                    value={value}
+                    onChange={(e) =>
+                      setRgb((prev) => ({
+                        ...prev,
+                        [channel]: parseInt(e.target.value),
+                      }))
+                    }
+                    className="flex-1"
+                  />
+                  <input
+                    type="number"
+                    min="0"
+                    max="255"
+                    value={value}
+                    onChange={(e) =>
+                      setRgb((prev) => ({
+                        ...prev,
+                        [channel]: parseInt(e.target.value),
+                      }))
+                    }
+                    className="w-16 rounded border px-2 py-1 text-right text-gray-700"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Palette Controls (with Tooltips) */}
+          <div className="mb-6 flex flex-wrap items-center gap-4">
+            {/* Palette Type */}
+            <Tooltip content="Select the type of color harmony for your palette.">
+              <select
+                value={paletteType}
+                onChange={(e) => setPaletteType(e.target.value)}
+                className="rounded border p-2 text-gray-700"
+              >
+                <option value="analogous">Analogous</option>
+                <option value="complementary">Complementary</option>
+                <option value="diverging">Diverging</option>
+                <option value="sequential">Sequential</option>
+              </select>
+            </Tooltip>
+
+            {/* Number of Colors */}
+            <Tooltip content="Choose how many colors to generate in your palette.">
+              <select
+                value={numColors}
+                onChange={(e) => setNumColors(parseInt(e.target.value))}
+                className="rounded border p-2 text-gray-700"
+              >
+                {[3, 4, 5, 6, 7, 8, 9].map((n) => (
+                  <option key={n} value={n}>
+                    {n} Colors
+                  </option>
+                ))}
+              </select>
+            </Tooltip>
+
+            {/* Colorblindness Simulation */}
+            <Tooltip content="Simulate different types of color blindness. Normal = no simulation.">
+              <select
+                value={colorblindType}
+                onChange={(e) => setColorblindType(e.target.value)}
+                className="rounded border p-2 text-gray-700"
+              >
+                <option value="normal">Normal Vision</option>
+                <option value="protanopia">Protanopia</option>
+                <option value="deuteranopia">Deuteranopia</option>
+                <option value="tritanopia">Tritanopia</option>
+              </select>
+            </Tooltip>
+          </div>
+
+          {/* Generated Palette */}
+          <div className="space-y-4">
+            <div className="flex h-16 w-full overflow-hidden rounded-lg">
+              {generatePalette().map((color, i) => (
+                <div
+                  key={i}
+                  className="palette-swatch relative flex-1"
+                  style={{ backgroundColor: colorUtils.rgbToHex(...color) }}
+                />
+              ))}
+            </div>
+
+            <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3">
+              {generatePalette().map((color, i) => (
+                <ColorSwatch key={i} color={color} />
+              ))}
+            </div>
+
+            {/* Export Buttons */}
+            <div className="flex flex-wrap gap-2 pt-4">
+              {['css', 'scss', 'json'].map((format) => (
+                <button
+                  key={format}
+                  onClick={() => exportPalette(format)}
+                  className="rounded bg-teal-500 px-4 py-2 text-white hover:bg-teal-600"
+                >
+                  Export {format.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // Mount the app
+    ReactDOM.render(<ColorMixer />, document.getElementById('root'));
+  </script>
+</body>
+</html>
+    
