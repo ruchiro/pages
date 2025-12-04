@@ -146,6 +146,142 @@
             }
         }
 
+        /* Mobile-specific styles */
+        @media (max-width: 600px) {
+            header {
+                padding: 50px 15px 40px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                padding: 0 10px;
+            }
+
+            .scenarios {
+                padding: 20px 12px 60px;
+            }
+
+            .scenario {
+                border-radius: 16px;
+                margin-bottom: 40px;
+            }
+
+            .scenario-header {
+                padding: 25px 20px 20px;
+            }
+
+            .scenario-title {
+                font-size: 1.5rem;
+            }
+
+            .scenario-question {
+                font-size: 1rem;
+            }
+
+            .visualization {
+                padding: 20px 15px;
+                min-height: auto;
+            }
+
+            canvas {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .legend {
+                flex-wrap: wrap;
+                gap: 10px 15px;
+                font-size: 0.65rem;
+                justify-content: center;
+            }
+
+            .explanation {
+                padding: 25px 20px;
+            }
+
+            .math-box {
+                padding: 15px 18px;
+                margin: 15px 0;
+                overflow-x: auto;
+            }
+
+            .math-box h4 {
+                font-size: 0.65rem;
+            }
+
+            .formula {
+                font-size: 0.95rem;
+                line-height: 2;
+            }
+
+            .formula .katex {
+                font-size: 1em;
+            }
+
+            .formula .equation-row {
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+            .insight {
+                font-size: 1.05rem;
+                line-height: 1.7;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .slider-group {
+                min-width: 100%;
+            }
+
+            .slider-group label {
+                font-size: 0.65rem;
+            }
+
+            input[type="range"] {
+                height: 8px;
+            }
+
+            input[type="range"]::-webkit-slider-thumb {
+                width: 24px;
+                height: 24px;
+            }
+
+            .value-display {
+                font-size: 0.8rem;
+            }
+
+            button {
+                width: 100%;
+                padding: 14px 28px;
+            }
+
+            footer {
+                padding: 40px 20px;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            input[type="range"]::-webkit-slider-thumb {
+                width: 28px;
+                height: 28px;
+            }
+
+            input[type="range"] {
+                height: 10px;
+            }
+
+            button {
+                padding: 16px 28px;
+                font-size: 1.1rem;
+            }
+        }
+
         .visualization {
             padding: 40px;
             background: rgba(0,0,0,0.3);
@@ -556,6 +692,49 @@
     </footer>
 
     <script>
+        // ==================== RESPONSIVE CANVAS SETUP ====================
+        const BASE_WIDTH = 450;
+        const BASE_HEIGHT = 300;
+        const ASPECT_RATIO = BASE_HEIGHT / BASE_WIDTH;
+
+        function getCanvasSize() {
+            const containerWidth = Math.min(window.innerWidth - 40, 450);
+            const width = Math.max(280, containerWidth);
+            const height = width * ASPECT_RATIO;
+            return { width, height };
+        }
+
+        function resizeAllCanvases() {
+            const { width, height } = getCanvasSize();
+            const canvases = [
+                document.getElementById('coffeeCanvas'),
+                document.getElementById('epidemicCanvas'),
+                document.getElementById('carCanvas'),
+                document.getElementById('boxCanvas')
+            ];
+            
+            canvases.forEach(canvas => {
+                if (canvas) {
+                    // Set actual canvas resolution
+                    const dpr = window.devicePixelRatio || 1;
+                    canvas.width = width * dpr;
+                    canvas.height = height * dpr;
+                    
+                    // Set display size
+                    canvas.style.width = width + 'px';
+                    canvas.style.height = height + 'px';
+                    
+                    // Scale context for retina displays
+                    const ctx = canvas.getContext('2d');
+                    ctx.scale(dpr, dpr);
+                }
+            });
+
+            // Store display dimensions for drawing functions
+            window.canvasDisplayWidth = width;
+            window.canvasDisplayHeight = height;
+        }
+
         // Utility functions
         function drawAxes(ctx, width, height, padding, xLabel, yLabel) {
             ctx.strokeStyle = 'rgba(255,255,255,0.2)';
@@ -567,10 +746,11 @@
             ctx.stroke();
 
             ctx.fillStyle = '#8a8a95';
-            ctx.font = '11px JetBrains Mono';
-            ctx.fillText(xLabel, width - padding - 20, height - padding + 20);
+            const fontSize = width < 350 ? 9 : 11;
+            ctx.font = `${fontSize}px JetBrains Mono`;
+            ctx.fillText(xLabel, width - padding - 20, height - padding + 18);
             ctx.save();
-            ctx.translate(padding - 10, padding + 20);
+            ctx.translate(padding - 8, padding + 20);
             ctx.rotate(-Math.PI / 2);
             ctx.fillText(yLabel, 0, 0);
             ctx.restore();
@@ -605,11 +785,11 @@
 
         function drawCoffee() {
             const ctx = coffeeCtx;
-            const width = coffeeCanvas.width;
-            const height = coffeeCanvas.height;
-            const padding = 50;
+            const width = window.canvasDisplayWidth || BASE_WIDTH;
+            const height = window.canvasDisplayHeight || BASE_HEIGHT;
+            const padding = width < 350 ? 35 : 50;
 
-            ctx.clearRect(0, 0, width, height);
+            ctx.clearRect(0, 0, width * 2, height * 2);
             drawGrid(ctx, width, height, padding);
             drawAxes(ctx, width, height, padding, 'time', 'temp');
 
@@ -690,11 +870,11 @@
 
         function drawEpidemic() {
             const ctx = epidemicCtx;
-            const width = epidemicCanvas.width;
-            const height = epidemicCanvas.height;
-            const padding = 50;
+            const width = window.canvasDisplayWidth || BASE_WIDTH;
+            const height = window.canvasDisplayHeight || BASE_HEIGHT;
+            const padding = width < 350 ? 35 : 50;
 
-            ctx.clearRect(0, 0, width, height);
+            ctx.clearRect(0, 0, width * 2, height * 2);
             drawGrid(ctx, width, height, padding);
             drawAxes(ctx, width, height, padding, 'days', 'cases');
 
@@ -770,11 +950,11 @@
 
         function drawCar() {
             const ctx = carCtx;
-            const width = carCanvas.width;
-            const height = carCanvas.height;
-            const padding = 50;
+            const width = window.canvasDisplayWidth || BASE_WIDTH;
+            const height = window.canvasDisplayHeight || BASE_HEIGHT;
+            const padding = width < 350 ? 35 : 50;
 
-            ctx.clearRect(0, 0, width, height);
+            ctx.clearRect(0, 0, width * 2, height * 2);
             drawGrid(ctx, width, height, padding);
             drawAxes(ctx, width, height, padding, 'time', '');
 
@@ -837,30 +1017,33 @@
                 ctx.stroke();
                 ctx.setLineDash([]);
 
-                // Animated car
+                // Animated car - scale for mobile
                 const carPos = 0.5 * a * carTime * carTime;
                 const carScreenX = padding + (carPos / maxX) * plotWidth * 0.9;
+                const carScale = width < 350 ? 0.7 : 1;
                 
                 // Car body
                 ctx.fillStyle = '#ff6b35';
-                ctx.fillRect(carScreenX - 15, height - padding + 10, 30, 12);
-                ctx.fillRect(carScreenX - 10, height - padding + 2, 20, 10);
+                ctx.fillRect(carScreenX - 15 * carScale, height - padding + 8, 30 * carScale, 12 * carScale);
+                ctx.fillRect(carScreenX - 10 * carScale, height - padding + 2, 20 * carScale, 8 * carScale);
                 
                 // Wheels
                 ctx.fillStyle = '#333';
                 ctx.beginPath();
-                ctx.arc(carScreenX - 8, height - padding + 22, 5, 0, Math.PI * 2);
-                ctx.arc(carScreenX + 8, height - padding + 22, 5, 0, Math.PI * 2);
+                ctx.arc(carScreenX - 8 * carScale, height - padding + 18 * carScale, 4 * carScale, 0, Math.PI * 2);
+                ctx.arc(carScreenX + 8 * carScale, height - padding + 18 * carScale, 4 * carScale, 0, Math.PI * 2);
                 ctx.fill();
 
                 // Values display
                 ctx.fillStyle = '#f5f5f0';
-                ctx.font = '11px JetBrains Mono';
+                const fontSize = width < 350 ? 9 : 11;
+                ctx.font = `${fontSize}px JetBrains Mono`;
                 const v = a * carTime;
                 const x = 0.5 * a * carTime * carTime;
-                ctx.fillText(`t = ${carTime.toFixed(1)}s`, currentX + 10, padding + 20);
-                ctx.fillText(`x = ${x.toFixed(1)}m`, currentX + 10, padding + 35);
-                ctx.fillText(`v = ${v.toFixed(1)}m/s`, currentX + 10, padding + 50);
+                const lineHeight = width < 350 ? 12 : 15;
+                ctx.fillText(`t = ${carTime.toFixed(1)}s`, currentX + 8, padding + 15);
+                ctx.fillText(`x = ${x.toFixed(1)}m`, currentX + 8, padding + 15 + lineHeight);
+                ctx.fillText(`v = ${v.toFixed(1)}m/s`, currentX + 8, padding + 15 + lineHeight * 2);
             }
         }
 
@@ -897,11 +1080,11 @@
 
         function drawBox() {
             const ctx = boxCtx;
-            const width = boxCanvas.width;
-            const height = boxCanvas.height;
-            const padding = 50;
+            const width = window.canvasDisplayWidth || BASE_WIDTH;
+            const height = window.canvasDisplayHeight || BASE_HEIGHT;
+            const padding = width < 350 ? 35 : 50;
 
-            ctx.clearRect(0, 0, width, height);
+            ctx.clearRect(0, 0, width * 2, height * 2);
             drawGrid(ctx, width, height, padding);
             drawAxes(ctx, width, height, padding, 'cut size x', 'volume');
 
@@ -977,11 +1160,14 @@
                 ctx.fill();
 
                 // 3D box preview
-                const boxBaseW = 60;
-                const boxBaseH = 42;
-                const boxDepth = Math.min(30, currentX * 3);
-                const boxCenterX = width - 80;
-                const boxCenterY = height - 80;
+                // Scale factor for responsive box preview
+                const boxScale = width < 350 ? 0.7 : 1;
+                const boxBaseW = 60 * boxScale;
+                const boxBaseH = 42 * boxScale;
+                const boxDepth = Math.min(30 * boxScale, currentX * 3 * boxScale);
+                const boxCenterX = width - (width < 350 ? 55 : 80);
+                const boxCenterY = height - (width < 350 ? 55 : 80);
+                const isoOffset = 15 * boxScale;
 
                 // Isometric box
                 const scaledW = boxBaseW * ((L - 2 * currentX) / L);
@@ -1005,8 +1191,8 @@
                 ctx.beginPath();
                 ctx.moveTo(boxCenterX - scaledW / 2, boxCenterY - boxDepth);
                 ctx.lineTo(boxCenterX + scaledW / 2, boxCenterY - boxDepth);
-                ctx.lineTo(boxCenterX + scaledW / 2 - 15, boxCenterY - boxDepth - scaledH / 2);
-                ctx.lineTo(boxCenterX - scaledW / 2 - 15, boxCenterY - boxDepth - scaledH / 2);
+                ctx.lineTo(boxCenterX + scaledW / 2 - isoOffset, boxCenterY - boxDepth - scaledH / 2);
+                ctx.lineTo(boxCenterX - scaledW / 2 - isoOffset, boxCenterY - boxDepth - scaledH / 2);
                 ctx.closePath();
                 ctx.fill();
                 ctx.stroke();
@@ -1016,15 +1202,16 @@
                 ctx.beginPath();
                 ctx.moveTo(boxCenterX - scaledW / 2, boxCenterY);
                 ctx.lineTo(boxCenterX - scaledW / 2, boxCenterY - boxDepth);
-                ctx.lineTo(boxCenterX - scaledW / 2 - 15, boxCenterY - boxDepth - scaledH / 2);
-                ctx.lineTo(boxCenterX - scaledW / 2 - 15, boxCenterY - scaledH / 2);
+                ctx.lineTo(boxCenterX - scaledW / 2 - isoOffset, boxCenterY - boxDepth - scaledH / 2);
+                ctx.lineTo(boxCenterX - scaledW / 2 - isoOffset, boxCenterY - scaledH / 2);
                 ctx.closePath();
                 ctx.fill();
                 ctx.stroke();
 
                 ctx.fillStyle = '#f5f5f0';
-                ctx.font = '11px JetBrains Mono';
-                ctx.fillText(`V = ${currentV.toFixed(0)} cm³`, boxCenterX - 35, boxCenterY + 20);
+                const fontSize = width < 350 ? 9 : 11;
+                ctx.font = `${fontSize}px JetBrains Mono`;
+                ctx.fillText(`V = ${currentV.toFixed(0)} cm³`, boxCenterX - 35 * boxScale, boxCenterY + 18);
             }
         }
 
@@ -1061,6 +1248,34 @@
         }
 
         renderEquations();
+
+        // ==================== INITIALIZATION & RESIZE HANDLING ====================
+        function redrawAll() {
+            resizeAllCanvases();
+            drawCoffee();
+            drawEpidemic();
+            drawCar();
+            drawBox();
+        }
+
+        // Initial setup
+        resizeAllCanvases();
+        drawCoffee();
+        drawEpidemic();
+        drawBox();
+        // Car animation starts automatically
+
+        // Handle window resize with debounce
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(redrawAll, 150);
+        });
+
+        // Handle orientation change on mobile
+        window.addEventListener('orientationchange', () => {
+            setTimeout(redrawAll, 100);
+        });
     </script>
 </body>
 </html>
